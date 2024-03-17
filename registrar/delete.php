@@ -5,7 +5,7 @@ include_once 'config.php';
 // Check if the ID parameter is set and is a valid integer
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
     // Prepare a delete statement
-    $sql = "DELETE FROM users WHERE id = :id";
+    $sql = "DELETE FROM schedules WHERE id = :id";
 
     if($stmt = $conn->prepare($sql)){
         // Bind parameters
@@ -17,7 +17,7 @@ if(isset($_GET['id']) && is_numeric($_GET['id'])){
         // Attempt to execute the prepared statement
         if($stmt->execute()){
             // Records deleted successfully. Redirect to landing page
-            header("location: user.php?deleted=1");
+            header("location: schedule.php?deleted=1");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";
