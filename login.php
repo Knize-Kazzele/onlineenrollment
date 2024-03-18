@@ -53,7 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     header("Location:teacher/teacher_dashboard.php");
                     exit;
                 } else {
-                    header("Location: user_dashboard.php");
+                  $_SESSION['user_id'] = $row['id'];
+                    header("Location:user/user_dashboard.php");
+                    exit;
                 }
                 exit();
             } else {

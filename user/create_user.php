@@ -4,9 +4,9 @@ include 'config.php';
 
 session_start();
 error_reporting(0);
-$superadmin_id = $_SESSION['superadmin_id'];
+$user_id = $_SESSION['user_id'];
 
-if(!isset($superadmin_id)){
+if(!isset($user_id)){
    header('location:login.php');
 }
 else{
@@ -105,6 +105,7 @@ else{
                     <option value="registrar">Registrar</option>
                     <option value="accounting">Accounting</option>
                     <option value="teacher">Teacher</option>
+                    <option value="user">Student/Parent</option>
                   </select>
                 </div>
                 
