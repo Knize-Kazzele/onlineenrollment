@@ -130,31 +130,6 @@
           </div>
           <div id="collapseTwo" class="collapse" data-parent="#accordion">
             <div class="card-body">
-              
-    
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-              Submission of Requirements
-            </a>
-          </div>
-          <div id="collapseThree" class="collapse" data-parent="#accordion">
-            <div class="card-body">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <a class="collapsed card-link" data-toggle="collapse" href="#collapseFour">
-              Enrollment
-            </a>
-          </div>
-          <div id="collapseFour" class="collapse" data-parent="#accordion">
-            <div class="card-body">
             <form method="post" action="insert.php">
                 <div class="row">
                     <div class="col-md-6">
@@ -205,6 +180,14 @@
                         <div class="form-group">
                             <label for="grade_level">Grade Level</label>
                             <input type="text" class="form-control" id="grade_level" name="grade_level" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -300,6 +283,49 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+              Submission of Requirements
+            </a>
+          </div>
+          <div id="collapseThree" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <a class="collapsed card-link" data-toggle="collapse" href="#collapseFour">
+              Enrollment
+            </a>
+          </div>
+          <div id="collapseFour" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+            <ol>
+                <li>Student enlistment/registration</li>
+                <li>View student registration</li>
+                <li>View school fees</li>
+                <li>Process school fees
+                    <ul>
+                        <li>Installment</li>
+                        <li>Cash basis</li>
+                    </ul>
+                </li>
+                <li>Payment process
+                    <ul>
+                        <li>Online</li>
+                        <li>Onsite</li>
+                    </ul>
+                </li>
+                <li>Admin approval</li>
+                <li>Student view certificate of registration</li>
+            </ol>
+
             </div>
           </div>
         </div>
