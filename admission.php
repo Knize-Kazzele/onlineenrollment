@@ -130,159 +130,66 @@
           </div>
           <div id="collapseTwo" class="collapse" data-parent="#accordion">
             <div class="card-body">
-            <form method="post" action="insert.php">
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3>Learner's Information</h3>
-                        <div class="form-group">
-                            <label for="lrn">LRN No.</label>
-                            <input type="text" class="form-control" id="lrn" name="lrn" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="last_name">Last Name</label>
-                            <input type="text" class="form-control" id="last_name" name="last_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="first_name">First Name</label>
-                            <input type="text" class="form-control" id="first_name" name="first_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="middle_name">Middle Name</label>
-                            <input type="text" class="form-control" id="middle_name" name="middle_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="extension_name">Extension Name</label>
-                            <input type="text" class="form-control" id="extension_name" name="extension_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="birthday">Birthday</label>
-                            <input type="date" class="form-control" id="birthday" name="birthday" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="place_of_birth">Place of Birth</label>
-                            <input type="text" class="form-control" id="place_of_birth" name="place_of_birth" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="sex">Sex</label>
-                            <select class="form-control" id="sex" name="sex" required>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="age">Age</label>
-                            <input type="number" class="form-control" id="age" name="age" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="mother_tongue">Mother Tongue</label>
-                            <input type="text" class="form-control" id="mother_tongue" name="mother_tongue" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="grade_level">Grade Level</label>
-                            <input type="text" class="form-control" id="grade_level" name="grade_level" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <h3>Address Information</h3>
-                        <div class="form-group">
-                            <label for="house_no">House No.</label>
-                            <input type="text" class="form-control" id="house_no" name="house_no" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="street_name">Street Name</label>
-                            <input type="text" class="form-control" id="street_name" name="street_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="barangay">Barangay</label>
-                            <input type="text" class="form-control" id="barangay" name="barangay" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="municipality_city">Municipality/City</label>
-                            <input type="text" class="form-control" id="municipality_city" name="municipality_city" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="province">Province</label>
-                            <input type="text" class="form-control" id="province" name="province" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="country">Country</label>
-                            <input type="text" class="form-control" id="country" name="country" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="zip_code">Zip Code</label>
-                            <input type="text" class="form-control" id="zip_code" name="zip_code" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <h3>Parent's/Guardians Information</h3>
-                        <!-- Father's Information -->
-                        <h4>Father's Information:</h4>
-                        <div class="form-group">
-                            <label for="father_last_name">Last Name</label>
-                            <input type="text" class="form-control" id="father_last_name" name="father_last_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="father_first_name">First Name</label>
-                            <input type="text" class="form-control" id="father_first_name" name="father_first_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="father_middle_name">Middle Name</label>
-                            <input type="text" class="form-control" id="father_middle_name" name="father_middle_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="father_contact_number">Contact Number</label>
-                            <input type="text" class="form-control" id="father_contact_number" name="father_contact_number" required>
-                        </div>
-                        <!-- Mother's Information -->
-                        <h4>Mother's Information:</h4>
-                        <div class="form-group">
-                            <label for="mother_last_name">Last Name</label>
-                            <input type="text" class="form-control" id="mother_last_name" name="mother_last_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="mother_first_name">First Name</label>
-                            <input type="text" class="form-control" id="mother_first_name" name="mother_first_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="mother_middle_name">Middle Name</label>
-                            <input type="text" class="form-control" id="mother_middle_name" name="mother_middle_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="mother_contact_number">Contact Number</label>
-                            <input type="text" class="form-control" id="mother_contact_number" name="mother_contact_number" required>
-                        </div>
-                        <!-- Guardian's Information -->
-                        <h4>Guardian's Information:</h4>
-                        <div class="form-group">
-                            <label for="guardian_last_name">Last Name</label>
-                            <input type="text" class="form-control" id="guardian_last_name" name="guardian_last_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="guardian_first_name">First Name</label>
-                            <input type="text" class="form-control" id="guardian_first_name" name="guardian_first_name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="guardian_middle_name">Middle Name</label>
-                            <input type="text" class="form-control" id="guardian_middle_name" name="guardian_middle_name">
-                        </div>
-                        <div class="form-group">
-                            <label for="guardian_contact_number">Contact Number</label>
-                            <input type="text" class="form-control" id="guardian_contact_number" name="guardian_contact_number" required>
-                        </div>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            <form method="post" action="insert.php" onsubmit="return validateForm()">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required>
+            </div>
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_number">Contact Number</label>
+                <input type="text" class="form-control" id="contact_number" name="contact_number">
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <select class="form-control" id="role" name="role" required>
+                    <option value="student">Student</option>
+                    <option value="parent">Parent</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+<script>
+    function validateForm() {
+        var password = document.getElementById("password").value;
+        var confirm_password = document.getElementById("confirm_password").value;
+
+        if (password != confirm_password) {
+            alert("Passwords do not match");
+            return false;
+        }
+        return true;
+    }
+</script>
+
             </div>
           </div>
         </div>
