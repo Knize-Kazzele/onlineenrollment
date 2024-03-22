@@ -1,16 +1,59 @@
 <?php
-
+// Your database connection logic
 include 'config.php';
 
+// Start session and error reporting
 session_start();
+error_reporting(0);
 
+// Check if the user is logged in
 $parent_id = $_SESSION['parent_id'];
-
-if(!isset($parent_id)){
-   header('location:login.php');
-   exit; // Add exit to stop further execution
+if (!isset($parent_id)) {
+    header('location:login.php');
+    exit; // Stop further execution
 }
+else {
+    // Check if the form is submitted
+    if (isset($_POST['add_registration'])) {
+        // Retrieve form data
+        $sname = $_POST['sname'];
+        $dob = $_POST['dob'];
+        $pob = $_POST['pob'];
+        $age = $_POST['age'];
+        $father_name = $_POST['father_name'];
+        $business_address_father = $_POST['business_address_father'];
+        $telephone_father = $_POST['telephone_father'];
+        $mother_name = $_POST['mother_name'];
+        $business_address_mother = $_POST['business_address_mother'];
+        $telephone_mother = $_POST['telephone_mother'];
+        $guardian = $_POST['guardian'];
+        $previous_school = $_POST['previous_school'];
+        $school_address = $_POST['school_address'];
 
+        // Prepare and execute SQL query
+        $sql = "INSERT INTO student (name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address) 
+            VALUES (:sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address)";
+        $query = $conn->prepare($sql);
+        $query->bindParam(':sname', $sname, PDO::PARAM_STR);
+        $query->bindParam(':dob', $dob, PDO::PARAM_STR);
+        $query->bindParam(':pob', $pob, PDO::PARAM_STR);
+        $query->bindParam(':age', $age, PDO::PARAM_INT);
+        $query->bindParam(':father_name', $father_name, PDO::PARAM_STR);
+        $query->bindParam(':business_address_father', $business_address_father, PDO::PARAM_STR);
+        $query->bindParam(':telephone_father', $telephone_father, PDO::PARAM_STR);
+        $query->bindParam(':mother_name', $mother_name, PDO::PARAM_STR);
+        $query->bindParam(':business_address_mother', $business_address_mother, PDO::PARAM_STR);
+        $query->bindParam(':telephone_mother', $telephone_mother, PDO::PARAM_STR);
+        $query->bindParam(':guardian', $guardian, PDO::PARAM_STR);
+        $query->bindParam(':previous_school', $previous_school, PDO::PARAM_STR);
+        $query->bindParam(':school_address', $school_address, PDO::PARAM_STR);
+
+        if ($query->execute()) {
+            $msg = "Student Registered Successfully";
+        } else {
+            $error = "Something went wrong. Please try again";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -52,16 +95,111 @@ if(!isset($parent_id)){
 
                     <div class="card">
                         <div class="card-body">
-                            
+                        <div class="container mt-5">
+                        <?php if($error){?>
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>ERROR</strong>: <?php echo htmlentities($error); ?>
+                                </div>
+                                <?php } else if($msg){?>
+                                <div class="alert alert-success" role="alert">
+                                    <strong>SUCCESS</strong>: <?php echo htmlentities($msg); ?>
+                                </div>
+                                <?php }?>
+                                <form method="post" name="add_registration" onSubmit="return valid();">
+    <div class="row mb-3">
+        <div class="col-md-9">
+            <label for="sname" class="form-label">Name</label>
+            <input type="text" class="form-control" id="sname" name="sname">
+        </div>
+        <div class="col-md-3">
+            <label for="image" class="form-label">Upload Image</label>
+            <input type="file" class="form-control" id="image" name="image">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="dob" class="form-label">Date of Birth</label>
+            <input type="date" class="form-control" id="dob" name="dob">
+        </div>
+        <div class="col-md-6">
+            <label for="pob" class="form-label">Place of Birth</label>
+            <input type="text" class="form-control" id="pob" name="pob">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="age" class="form-label">Age</label>
+            <input type="text" class="form-control" id="age" name="age" readonly>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="father_name" class="form-label">Name of Father</label>
+            <input type="text" class="form-control" id="father_name" name="father_name">
+        </div>
+        <div class="col-md-6">
+            <label for="business_address_father" class="form-label">Business Address (Father)</label>
+            <input type="text" class="form-control" id="business_address_father" name="business_address_father">
+        </div>
+        <div class="col-md-6">
+            <label for="telephone_father" class="form-label">Telephone (Father)</label>
+            <input type="tel" class="form-control" id="telephone_father" name="telephone_father">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="mother_name" class="form-label">Name of Mother</label>
+            <input type="text" class="form-control" id="mother_name" name="mother_name">
+        </div>
+        <div class="col-md-6">
+            <label for="business_address_mother" class="form-label">Business Address (Mother)</label>
+            <input type="text" class="form-control" id="business_address_mother" name="business_address_mother">
+        </div>
+        <div class="col-md-6">
+            <label for="telephone_mother" class="form-label">Telephone (Mother)</label>
+            <input type="tel" class="form-control" id="telephone_mother" name="telephone_mother">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="guardian" class="form-label">Guardian (for absent parent/s)</label>
+            <input type="text" class="form-control" id="guardian" name="guardian">
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="previous_school" class="form-label">Previous School Attended</label>
+            <input type="text" class="form-control" id="previous_school" name="previous_school">
+        </div>
+        <div class="col-md-6">
+            <label for="school_address" class="form-label">Address of School</label>
+            <input type="text" class="form-control" id="school_address" name="school_address">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" name="add_registration">Submit</button>
+</form>
+
                         </div>
                      </div>
-
+                    </div>
                 </div>
             </div>
         </section>
 
     </main><!-- End #main -->
-
+    <script>
+    // Calculate age based on date of birth
+    document.getElementById('dob').addEventListener('change', function() {
+      var dob = new Date(this.value);
+      var today = new Date();
+      var age = today.getFullYear() - dob.getFullYear();
+      var monthDiff = today.getMonth() - dob.getMonth();
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+        age--;
+      }
+      document.getElementById('age').value = age;
+    });
+  </script>
 
 
     <?php
@@ -72,3 +210,4 @@ if(!isset($parent_id)){
 </body>
 
 </html>
+<?php } ?>
