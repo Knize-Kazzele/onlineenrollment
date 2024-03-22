@@ -13,7 +13,7 @@
   <li class="nav-item">
   <a class="nav-link collapsed" href="student_registration.php">
       <i class="bi bi-file-earmark-person-fill"></i>
-      <span>View Student Registration</span>
+      <span>Student Registration</span>
     </a>
   </li>
 
