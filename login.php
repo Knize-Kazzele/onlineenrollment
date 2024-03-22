@@ -52,9 +52,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   $_SESSION['teacher_id'] = $row['id'];
                     header("Location:teacher/teacher_dashboard.php");
                     exit;
+                    
+                }
+                  elseif ($row["role"] == "parent") {
+                    $_SESSION['parent_id'] = $row['id'];
+                      header("Location:parent/parent_dashboard.php");
+                      exit;
+                    
                 } else {
-                  $_SESSION['user_id'] = $row['id'];
-                    header("Location:user/user_dashboard.php");
+                  $_SESSION['student_id'] = $row['id'];
+                    header("Location:student/student_dashboard.php");
                     exit;
                 }
                 exit();

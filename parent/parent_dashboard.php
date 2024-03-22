@@ -4,9 +4,9 @@ include 'config.php';
 
 session_start();
 
-$student_id = $_SESSION['student_id'];
+$parent_id = $_SESSION['parent_id'];
 
-if(!isset($student_id)){
+if(!isset($parent_id)){
    header('location:login.php');
 }
 
@@ -19,7 +19,7 @@ if(!isset($student_id)){
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - Accounting</title>
+  <title>Dashboard - Parent</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 

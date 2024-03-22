@@ -4,9 +4,9 @@ include 'config.php';
 
 session_start();
 error_reporting(0);
-$student_id = $_SESSION['student_id'];
+$parent_id = $_SESSION['parent_id'];
 
-if(!isset($student_id)){
+if(!isset($parent_id)){
    header('location:login.php');
 }
 else{
