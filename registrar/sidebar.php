@@ -11,6 +11,13 @@
   </li><!-- End Dashboard Nav -->
 
   <li class="nav-item">
+  <a class="nav-link collapsed" href="enrollment.php">
+  <i class="bi bi-person-vcard-fill"></i>
+      <span>Enrollment</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
   <a class="nav-link collapsed" href="schedule.php">
       <i class="bi bi-calendar2-week-fill"></i>
       <span>Schedule</span>
