@@ -31,9 +31,10 @@ else {
         $school_address = $_POST['school_address'];
 
         // Prepare and execute SQL query
-        $sql = "INSERT INTO student (name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address) 
-            VALUES (:sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address)";
+        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, isVerified) 
+            VALUES (:parent_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, 0)";
         $query = $conn->prepare($sql);
+        $query->bindParam(':parent_id', $parent_id, PDO::PARAM_INT);
         $query->bindParam(':sname', $sname, PDO::PARAM_STR);
         $query->bindParam(':dob', $dob, PDO::PARAM_STR);
         $query->bindParam(':pob', $pob, PDO::PARAM_STR);
@@ -105,6 +106,31 @@ else {
                                     <strong>SUCCESS</strong>: <?php echo htmlentities($msg); ?>
                                 </div>
                                 <?php }?>
+                                <?php
+                                $query = $conn->prepare("SELECT * FROM student WHERE userId = :parent_id");
+                                $query->bindParam(':parent_id', $parent_id, PDO::PARAM_INT);
+                                $query->execute();
+                                $count = $query->rowCount();
+                                $result = $query->fetch(PDO::FETCH_ASSOC);
+                                if ($count > 0) {
+                                    if ($result['isVerified'] == 0) {
+                                    // User is already registered but not verified, show the message card
+                                    ?>
+                                        <div class="alert alert-info text-center" style="font-size: 22px;">
+                                        Thank you for your submission. We have received your registration.<br> 
+                                        Please be patient as our registrar verifies your information.<br>Once your registration is verified, 
+                                        you will receive a confirmation email.<br> If you have any further questions or concerns, please don't hesitate to reach out to us.
+                                        </div>
+
+
+                                        <?php
+    } elseif ($result['isVerified'] == 1) {
+        // Student is already enrolled
+        echo "<div class='alert alert-success text-center' style='font-size: 22px;'>ENROLLED</div>";
+    }
+} else {
+    // User is not registered yet, show the registration form
+?>
                                 <form method="post" name="add_registration" onSubmit="return valid();">
     <div class="row mb-3">
         <div class="col-md-9">
@@ -178,6 +204,7 @@ else {
     </div>
     <button type="submit" class="btn btn-primary" name="add_registration">Submit</button>
 </form>
+<?php}?>
 
                         </div>
                      </div>
@@ -210,4 +237,4 @@ else {
 </body>
 
 </html>
-<?php } ?>
+<?php }} ?>
