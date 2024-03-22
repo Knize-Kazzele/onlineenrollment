@@ -4,7 +4,7 @@ include 'config.php';
 
 // Start session and error reporting
 session_start();
-error_reporting(0);
+error_reporting(E_ALL);
 
 // Check if the user is logged in
 $parent_id = $_SESSION['parent_id'];
@@ -13,6 +13,8 @@ if (!isset($parent_id)) {
     exit; // Stop further execution
 }
 else {
+    $error = ""; // Initialize $error variable
+    $msg = ""; // Initialize $error variable
     // Check if the form is submitted
     if (isset($_POST['add_registration'])) {
         // Retrieve form data
@@ -29,10 +31,26 @@ else {
         $guardian = $_POST['guardian'];
         $previous_school = $_POST['previous_school'];
         $school_address = $_POST['school_address'];
+        $grade_level = $_POST['grade_level']; // Add this line to retrieve grade level
+        $requirements = $_FILES['requirements']; // Add this line to retrieve requirements
+
+        // File upload handling
+        $uploaded_files = [];
+        $file_count = count($_FILES['requirements']['name']);
+        for ($i = 0; $i < $file_count; $i++) {
+            $file_name = $_FILES['requirements']['name'][$i];
+            $file_tmp = $_FILES['requirements']['tmp_name'][$i];
+            $destination = '../uploads/' . $file_name;
+            if (move_uploaded_file($file_tmp, $destination)) {
+                $uploaded_files[] = $destination;
+            } else {
+                $error = "Failed to move uploaded file: $file_name";
+            }
+        }
 
         // Prepare and execute SQL query
-        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, isVerified) 
-            VALUES (:parent_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, 0)";
+        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, isVerified) 
+        VALUES (:parent_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, 0)";
         $query = $conn->prepare($sql);
         $query->bindParam(':parent_id', $parent_id, PDO::PARAM_INT);
         $query->bindParam(':sname', $sname, PDO::PARAM_STR);
@@ -48,6 +66,8 @@ else {
         $query->bindParam(':guardian', $guardian, PDO::PARAM_STR);
         $query->bindParam(':previous_school', $previous_school, PDO::PARAM_STR);
         $query->bindParam(':school_address', $school_address, PDO::PARAM_STR);
+        $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR); // Bind grade level
+        $query->bindParam(':requirements', json_encode($uploaded_files), PDO::PARAM_STR);
 
         if ($query->execute()) {
             $msg = "Student Registered Successfully";
@@ -131,7 +151,7 @@ else {
 } else {
     // User is not registered yet, show the registration form
 ?>
-                                <form method="post" name="add_registration" onSubmit="return valid();">
+                                <form method="post" name="add_registration" onSubmit="return valid();" enctype="multipart/form-data">
     <div class="row mb-3">
         <div class="col-md-9">
             <label for="sname" class="form-label">Name</label>
@@ -202,7 +222,25 @@ else {
             <input type="text" class="form-control" id="school_address" name="school_address">
         </div>
     </div>
+    <hr size=8 noshade>
+    <div class="row mb-3">
+    <div class="col-md-6">
+        <label for="grade_level" class="form-label">Grade Level</label>
+        <select class="form-select" id="grade_level" name="grade_level">
+            <option value="1">Grade 1</option>
+            <option value="2">Grade 2</option>
+            <!-- Add more options for other grade levels -->
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="requirements" class="form-label">Requirements</label>
+        <input type="file" class="form-control" id="requirements" name="requirements[]" multiple>
+        <!-- Allow multiple file uploads for requirements -->
+    </div>
+</div>
+<center>
     <button type="submit" class="btn btn-primary" name="add_registration">Submit</button>
+</center>
 </form>
 <?php}?>
 
