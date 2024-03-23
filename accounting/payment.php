@@ -60,46 +60,47 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
 }
 ?>
 
-                            <a href="create_user.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add
-                                New Employee</a>
+                            <a href="create_payment.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add
+                                New Payment</a>
                         </div>
                         <?php
                     // Include config file
                     require_once "config1.php";
                     
                     // Attempt select query execution
-                    $sql = "SELECT * FROM users";
+                    $sql = "SELECT * FROM payments";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
-                                        echo "<th>Name</th>";
-                                        echo "<th>Username</th>";
-                                        echo "<th>Role</th>";
+                                        echo "<th>Grade Level</th>";
+                                        echo "<th>Upon Enrollment</th>";
+                                        echo "<th>Tuition June to March</th>";
+                                        echo "<th>Total Tuition Fee w/o Books</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" .$row['first_name'].' '.$row['last_name']. "</td>";
-                                        echo "<td>" . $row['username'] . "</td>";
-                                        echo "<td>" . $row['role'] . "</td>";
+                                       
+                                        echo "<td>" .$row['grade_level']."</td>";
+                                        echo "<td>" . $row['upon_enrollment'] . "</td>";
+                                        echo "<td>" . $row['tuition_june_to_march'] . "</td>";
+                                        echo "<td>" . $row['total_whole_year'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
-                                            echo '<a href="edit_user.php?id='. $row['id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
-                                            echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
+                                            echo '<a href="read.php?id='. $row['payment_id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
+                                            echo '<a href="edit_payment.php?id='. $row['payment_id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
+                                            echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['payment_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
                                             
                                             // Delete Modal
                                             echo '
-                                            <div class="modal fade" id="deleteModal'.$row['id'].'" tabindex="-1" aria-labelledby="deleteModalLabel'.$row['id'].'" aria-hidden="true">
+                                            <div class="modal fade" id="deleteModal'.$row['payment_id'].'" tabindex="-1" aria-labelledby="deleteModalLabel'.$row['payment_id'].'" aria-hidden="true">
                                               <div class="modal-dialog">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel'.$row['id'].'">Confirm Delete</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel'.$row['payment_id'].'">Confirm Delete</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
@@ -107,7 +108,7 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <a href="delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                                    <a href="delete.php?id='.$row['payment_id'].'" class="btn btn-danger">Delete</a>
                                                   </div>
                                                 </div>
                                               </div>
