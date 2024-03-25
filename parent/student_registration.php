@@ -33,24 +33,41 @@ else {
         $school_address = $_POST['school_address'];
         $grade_level = $_POST['grade_level']; // Add this line to retrieve grade level
         $requirements = $_FILES['requirements']; // Add this line to retrieve requirements
+        $image = $_FILES['image']; // Retrieve uploaded image
+
+        // File upload handling for image
+        $image_name = $_FILES['image']['name'];
+        $image_tmp = $_FILES['image']['tmp_name'];
+        $image_destination = '../uploads/images/' . $image_name;
+        if (move_uploaded_file($image_tmp, $image_destination)) {
+            $uploaded_image_path = $image_destination;
+        } else {
+            $error = "Failed to move uploaded image file: $image_name";
+        }
 
         // File upload handling
         $uploaded_files = [];
         $file_count = count($_FILES['requirements']['name']);
+        $allowed_extensions = array('pdf'); // Specify allowed file extensions
         for ($i = 0; $i < $file_count; $i++) {
             $file_name = $_FILES['requirements']['name'][$i];
             $file_tmp = $_FILES['requirements']['tmp_name'][$i];
+            $file_extension = strtolower(pathinfo($file_name, PATHINFO_EXTENSION)); // Get the file extension
             $destination = '../uploads/' . $file_name;
-            if (move_uploaded_file($file_tmp, $destination)) {
-                $uploaded_files[] = $destination;
+            if (in_array($file_extension, $allowed_extensions)) {
+                if (move_uploaded_file($file_tmp, $destination)) {
+                    $uploaded_files[] = $destination;
+                } else {
+                    $error = "Failed to move uploaded file: $file_name";
+                }
             } else {
-                $error = "Failed to move uploaded file: $file_name";
+                $error = "File type not allowed for $file_name. Only PDF files are allowed.";
             }
         }
 
         // Prepare and execute SQL query
-        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, isVerified) 
-        VALUES (:parent_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, 0)";
+        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, image_path, isVerified) 
+        VALUES (:parent_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, :image_path, 0)";
         $query = $conn->prepare($sql);
         $query->bindParam(':parent_id', $parent_id, PDO::PARAM_INT);
         $query->bindParam(':sname', $sname, PDO::PARAM_STR);
@@ -68,6 +85,7 @@ else {
         $query->bindParam(':school_address', $school_address, PDO::PARAM_STR);
         $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR); // Bind grade level
         $query->bindParam(':requirements', json_encode($uploaded_files), PDO::PARAM_STR);
+        $query->bindParam(':image_path', $uploaded_image_path, PDO::PARAM_STR); // Add this line to bind image path
 
         if ($query->execute()) {
             $msg = "Student Registered Successfully";
@@ -152,16 +170,19 @@ else {
     // User is not registered yet, show the registration form
 ?>
                                 <form method="post" name="add_registration" onSubmit="return valid();" enctype="multipart/form-data">
-    <div class="row mb-3">
-        <div class="col-md-9">
-            <label for="sname" class="form-label">Name</label>
-            <input type="text" class="form-control" id="sname" name="sname">
-        </div>
-        <div class="col-md-3">
-            <label for="image" class="form-label">Upload Image</label>
-            <input type="file" class="form-control" id="image" name="image">
-        </div>
-    </div>
+                                <div class="row mb-3">
+                                <div class="col-md-9" style="margin-top: 120px;">
+    <label for="sname" class="form-label">Name</label>
+    <input type="text" class="form-control" id="sname" name="sname">
+</div>
+<div class="col-md-3 text-center">
+    <img id="preview" src="../images/profile.jpg" alt="Profile Picture" class="mx-auto d-block" style="width: 200px; height: 200px; cursor: pointer;" onclick="triggerFileUpload()">
+    <input type="file" accept="image/*"  class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;">
+    <label for="image" class="form-label">Upload Image (2x2)</label>
+</div>
+
+</div>
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="dob" class="form-label">Date of Birth</label>
@@ -173,7 +194,7 @@ else {
         </div>
     </div>
     <div class="row mb-3">
-        <div class="col-md-6">
+        <div class="col-md-1">
             <label for="age" class="form-label">Age</label>
             <input type="text" class="form-control" id="age" name="age" readonly>
         </div>
@@ -232,11 +253,16 @@ else {
             <!-- Add more options for other grade levels -->
         </select>
     </div>
-    <div class="col-md-6">
-        <label for="requirements" class="form-label">Requirements</label>
-        <input type="file" class="form-control" id="requirements" name="requirements[]" multiple>
-        <!-- Allow multiple file uploads for requirements -->
-    </div>
+    <div class="col-md-6" style="margin-top: 20px;">
+    <label for="requirements" class="form-label">Requirements:</label>
+    <ul>
+        <li>F138 (CARD)</li>
+        <li>Birth Certificate Xerox</li>
+        <li>Good moral Certificate</li>
+    </ul>
+    <input type="file" class="form-control" id="requirements" accept="application/pdf" name="requirements[]" multiple>
+    <!-- Allow multiple file uploads for requirements -->
+</div>
 </div>
 <center>
     <button type="submit" class="btn btn-primary" name="add_registration">Submit</button>
@@ -264,6 +290,23 @@ else {
       }
       document.getElementById('age').value = age;
     });
+  </script>
+
+  <script>
+    function triggerFileUpload() {
+    document.getElementById('image').click();
+}
+
+    function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function(){
+        var output = document.getElementById('preview');
+        output.src = reader.result;
+        output.style.display = 'block';
+    }
+    reader.readAsDataURL(event.target.files[0]);
+}
+
   </script>
 
 

@@ -6,7 +6,7 @@
   <li class="nav-item">
     <a class="nav-link collapsed" href="student_dashboard.php">
       <i class="bi bi-grid-fill"></i>
-      <span>Dashboard</span>
+      <span>Home</span>
     </a>
   </li><!-- End Dashboard Nav -->
 
