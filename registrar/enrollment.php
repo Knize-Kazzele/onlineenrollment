@@ -108,30 +108,9 @@ echo '
   </div>
 </div>';
                         }
-                        echo '<a href="#" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewModal'.$row['id'].'" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
+                        echo '<a href="view_record.php?id='.$row['student_id'].'" class="btn btn-info" title="View Record"><span class="bi bi-eye-fill"></span></a>';
+
                                         
-                        // View Modal
-                        echo '
-                        <div class="modal fade" id="viewModal'.$row['id'].'" tabindex="-1" aria-labelledby="viewModalLabel'.$row['id'].'" aria-hidden="true">
-                          <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" id="viewModalLabel'.$row['id'].'">View Record</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                              <div class="modal-body">
-                                <!-- Put your details here -->
-                                <p>Name: '.$row['name'].'</p>
-                                <p>Date of Birth: '.$row['dob'].'</p>
-                                <p>Email: '.$row['email'].'</p>
-                                <!-- Additional details as needed -->
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                              </div>
-                            </div>
-                          </div>
-                        </div>';
                                             echo '  ';
                                             echo '<a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
 
