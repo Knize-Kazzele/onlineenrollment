@@ -15,22 +15,6 @@ if (!isset($registrar_id)) {
 else {
     $error = ""; // Initialize $error variable
     $msg = ""; // Initialize $error variable
-
-    if(isset($_POST['verify_student'])) {
-        // Ensure the id is set before updating
-        if(isset($_GET['id'])) {
-            $id = $_GET['id'];
-            // Update student verification status in the database
-            $sql = "UPDATE student SET isVerified = 1 WHERE student_id = :id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id', $id, PDO::PARAM_INT);
-            $query->execute();
-            $msg = "Student verified successfully."; // Set success message
-        } else {
-            $error = "Student ID not provided.";
-        }
-    }
-    
     }
 ?>
 <!DOCTYPE html>
@@ -92,7 +76,10 @@ else {
                                     <strong>SUCCESS</strong>: <?php echo htmlentities($msg); ?>
                                 </div>
                                 <?php }?>
-                                <form method="post">
+                                <form method="post" action="verify_another.php">
+                                <?php if(isset($id)): ?>
+        <input type="hidden" name="id" value="<?php echo $id; ?>">
+    <?php endif; ?>
                                 <div class="row mb-3">
                                 <div class="col-md-9" style="margin-top: 120px;">
     <label for="sname" class="form-label">Name</label>
@@ -203,12 +190,11 @@ if ($files) {
 }
 ?>
 </div>
-<?php if ($student['isVerified'] == 1): ?>
-    
-<?php else: ?>
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary" name="verify_student">Verify Student</button>
-    </div><?php endif; ?>
+<?php if ($student['isVerified'] != 1): ?>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary" name="verify_student">Verify Student</button>
+        </div>
+    <?php endif; ?>
 </div>
 </form>
 <?php}?>
