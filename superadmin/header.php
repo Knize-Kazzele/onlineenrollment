@@ -1,12 +1,15 @@
 <!-- ======= Header ======= -->
-<header id="header" class="header fixed-top d-flex align-items-center">
+<header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #852542;">
 
-<div class="d-flex align-items-center justify-content-between">
-  <a href="superadmin_dashboard.php" class="logo d-flex align-items-center">
-    <span class="d-none d-lg-block">Eastern Achiever Academy of Taguig</span>
+<div class="d-flex align-items-center justify-content-center">
+  <a href="superadmin_dashboard.php" class="logo d-flex align-items-center justify-content-center">
+    <span class="d-none d-lg-block"><!-- Insert Image -->
+      <img src="../images/logo1.png" alt="Logo">
+    </span>
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
+
 
 <nav class="header-nav ms-auto">
   <ul class="d-flex align-items-center">

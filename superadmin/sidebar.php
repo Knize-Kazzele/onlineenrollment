@@ -1,5 +1,5 @@
 <!-- ======= Sidebar ======= -->
-<aside id="sidebar" class="sidebar">
+<aside id="sidebar" class="sidebar" style="background-color: #373746;">
 
 <ul class="sidebar-nav" id="sidebar-nav">
 
