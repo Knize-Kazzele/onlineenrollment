@@ -1,5 +1,5 @@
 <!-- ======= Header ======= -->
-<header id="header" class="header fixed-top d-flex align-items-center" style="background-color: #852542;">
+<header id="header" class="header fixed-top d-flex align-items-center">
 
 <div class="d-flex align-items-center justify-content-center">
   <a href="superadmin_dashboard.php" class="logo d-flex align-items-center justify-content-center">

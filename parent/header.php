@@ -3,7 +3,9 @@
 
 <div class="d-flex align-items-center justify-content-between">
   <a href="user_dashboard.php" class="logo d-flex align-items-center">
-    <span class="d-none d-lg-block">Eastern Achiever Academy of Taguig</span>
+  <span class="d-none d-lg-block"><!-- Insert Image -->
+      <img src="../images/logo1.png" alt="Logo">
+    </span>
   </a>
   <i class="bi bi-list toggle-sidebar-btn"></i>
 </div><!-- End Logo -->
