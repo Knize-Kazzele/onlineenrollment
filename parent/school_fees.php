@@ -47,27 +47,8 @@ if(!isset($parent_id)){
         </div><!-- End Page Title -->
 
         <section class="section">
-        <div class="row justify-content-center">
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title text-center">Installment</h5>
-                
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title text-center">Cash Basis</h5>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-8">
 
                     <div class="card">
                         <div class="card-body">
@@ -121,7 +102,13 @@ if(!isset($parent_id)){
 
                     </div>
                 </div>
-
+                <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title"></h5>
+                    </div>
+                </div>
+            </div>
             </div>
             </div>
         </section>
