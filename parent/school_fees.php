@@ -25,6 +25,8 @@ if(!isset($parent_id)){
 
     <?php include 'asset.php';?>
 
+    
+
 </head>
 
 <body>
@@ -47,6 +49,7 @@ if(!isset($parent_id)){
         </div><!-- End Page Title -->
 
         <section class="section">
+
             <div class="row">
                 <div class="col-lg-8">
 
@@ -81,7 +84,8 @@ if(!isset($parent_id)){
                                         echo "<td>" .$row['grade_level']."</td>";
                                         echo "<td>" . $row['total_whole_year'] . "</td>";
                                         echo "<td>";
-                                            
+                                            // Button trigger modal
+                                            echo '';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
@@ -96,24 +100,147 @@ if(!isset($parent_id)){
                         echo "Oops! Something went wrong. Please try again later.";
                     }
  
-                    // Close connection
-                    mysqli_close($link);
+                 
                     ?>
 
                     </div>
                 </div>
+
                 <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"></h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="text-align: center;">
+                            <?php
+// Include config file
+require_once "config1.php";
+
+// Attempt select query execution
+$sql = "SELECT *
+        FROM student
+        INNER JOIN payments on student.grade_level = payments.grade_level 
+        WHERE student.userId = $parent_id";
+if($result = mysqli_query($link, $sql)){
+    if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_array($result)) {
+            echo ' <h5 class="card-title">Balance: ₱'.$row['total_whole_year'].'</h5>';
+        }
+        // Free result set
+        mysqli_free_result($result);
+    } else{
+        echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+    }
+} else{
+    echo "Oops! Something went wrong. Please try again later.";
+}
+// Close connection
+mysqli_close($link);
+?>
+
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Make a Payment</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
             </div>
             </div>
         </section>
 
     </main><!-- End #main -->
+
+    <!-- Modal -->
+<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="paymentModalLabel">Make a Payment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Payment form -->
+                <!-- Payment form -->
+            <!-- Payment form -->
+<form id="paymentForm" method="post" action="make_payment.php" enctype="multipart/form-data">
+<div class="mb-3">
+    <label for="payment_type" class="form-label">Payment Type</label>
+    <select class="form-select" id="payment_type" name="payment_type">
+        <option value="cash">Cash</option>
+        <option value="installment">Installment</option>
+    </select>
+</div>
+    <div class="mb-3">
+        <label for="payment_amount" class="form-label">Payment Amount</label>
+        <input type="text" class="form-control" id="payment_amount" name="payment_amount" required>
+    </div>
+    <div class="mb-3">
+    <label class="form-label">Payment Method</label>
+    <div class="form-check">
+        <div style="display: inline-block; margin-right: 20px;">
+            <label class="form-check-label" for="payment_method_cash">
+                <img src="../images/cash_icon.png" alt="Cash Icon" class="payment-icon" style="width: 75px; height: 65px; vertical-align: middle; margin-right: 5px;">
+            </label>
+            <input class="form-check-input" type="radio" name="payment_method" id="payment_method_cash" value="Cash" checked>
+        </div>
+        <div style="display: inline-block;">
+            <label class="form-check-label" for="payment_method_gcash">
+                <img src="../images/gcash_icon.png" alt="GCash Icon" class="payment-icon" style="width: 200px; height: 65px; vertical-align: middle; margin-right: 5px;">
+            </label>
+            <input class="form-check-input" type="radio" name="payment_method" id="payment_method_gcash" value="GCash">
+        </div>
+    </div>
+</div>
+
+<div id="additionalFields" class="mb-3" style="display: none;">
+    <!-- Additional fields for GCash payment method -->
+    <div class="mb-3">
+        <label for="gcash_number" class="form-label">GCash Number</label>
+        <input type="text" class="form-control" id="gcash_number" name="gcash_number">
+    </div>
+    <div class="mb-3">
+        <label for="reference_number" class="form-label">Reference Number</label>
+        <input type="text" class="form-control" id="reference_number" name="reference_number">
+    </div>
+    <div class="mb-3">
+        <label for="screenshot" class="form-label">Upload Screenshot</label>
+        <input type="file" class="form-control" id="screenshot" name="screenshot">
+    </div>
+    <!-- Add more input fields as needed -->
+</div>
+    <!-- Add more fields as needed -->
+    <button type="submit" class="btn btn-primary">Make Payment</button>
+</form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var cashRadio = document.getElementById("payment_method_cash");
+    var gcashRadio = document.getElementById("payment_method_gcash");
+    var additionalFieldsDiv = document.getElementById("additionalFields");
+
+    // Set initial state based on default selection
+    if (cashRadio.checked) {
+        additionalFieldsDiv.style.display = 'none';
+    } else if (gcashRadio.checked) {
+        additionalFieldsDiv.style.display = 'block';
+    }
+
+    // Add event listeners to radio buttons to toggle additional fields
+    cashRadio.addEventListener("change", function() {
+        additionalFieldsDiv.style.display = 'none';
+    });
+
+    gcashRadio.addEventListener("change", function() {
+        additionalFieldsDiv.style.display = 'block';
+    });
+});
+</script>
 
 
 
