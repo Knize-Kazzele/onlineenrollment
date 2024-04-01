@@ -140,7 +140,7 @@ if($result = mysqli_query($link, $sql)){
     echo "Oops! Something went wrong. Please try again later.";
 }
 // Close connection
-mysqli_close($link);
+
 ?>
 
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Make a Payment</button>
@@ -225,8 +225,40 @@ mysqli_close($link);
     </div>
 </div>
 
+<?php
+
+require_once "config1.php";
+
+// Attempt select query execution
+$sql = "SELECT *
+        FROM student
+        INNER JOIN payments on student.grade_level = payments.grade_level 
+        WHERE student.userId = $parent_id";
+if($result = mysqli_query($link, $sql)){
+    if(mysqli_num_rows($result) > 0){
+        while ($row = mysqli_fetch_array($result)) {
+            $balance = $row['total_whole_year'];
+            $installment_balance = $row['upon_enrollment'];
+        }
+        // Free result set
+        mysqli_free_result($result);
+    } else{
+        $installment_balance = $row['upon_enrollment'];
+    }
+} else{
+    echo "Oops! Something went wrong. Please try again later.";
+}
+// Close connection
+mysqli_close($link);
+?>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    var paymentTypeSelect = document.getElementById("payment_type");
+    var paymentAmountInput = document.getElementById("payment_amount");
+    var balance = <?php echo json_encode($balance); ?>; 
+    var installment_balance = <?php echo json_encode($installment_balance); ?>; // Assigning the balance to JavaScript variable
+
     var cashRadio = document.getElementById("payment_method_cash");
     var gcashRadio = document.getElementById("payment_method_gcash");
     var additionalFieldsDiv = document.getElementById("additionalFields");
@@ -246,8 +278,31 @@ document.addEventListener("DOMContentLoaded", function() {
     gcashRadio.addEventListener("change", function() {
         additionalFieldsDiv.style.display = 'block';
     });
+
+    // Function to update payment amount based on payment type
+    function updatePaymentAmount() {
+        var selectedPaymentType = paymentTypeSelect.value;
+        if (selectedPaymentType === 'cash') {
+            // Set payment amount to the current balance
+            paymentAmountInput.value = balance;
+        } else if(selectedPaymentType === 'installment') {
+            // Allow user to input payment amount manually
+            paymentAmountInput.value = installment_balance;
+        }
+        else{
+            paymentAmountInput.value='';
+        }
+    }
+
+    // Set initial state based on default selection
+    updatePaymentAmount();
+
+    // Add event listener to payment type select
+    paymentTypeSelect.addEventListener("change", updatePaymentAmount);
 });
 </script>
+
+
 
 
 
