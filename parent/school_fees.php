@@ -63,29 +63,36 @@ if(!isset($parent_id)){
                     
                     // Attempt select query execution
                     $sql = "SELECT *
-                    FROM student
-                    INNER JOIN payments on student.grade_level = payments.grade_level 
-                    WHERE student.userId = $parent_id";
+                    FROM transactions
+                    WHERE user_id = $parent_id;";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Grade Level</th>";
-                                        
-                                        echo "<th>Total Tuition Fee w/o Books</th>";
-                                        echo "<th>Action</th>";
+                                        echo "<th>Reference No.</th>";
+                                        echo "<th>Payment Method</th>";
+                                        echo "<th>Payment Type</th>";
+                                        echo "<th>Payment Amount</th>";
+                                        echo "<th>Payment Date</th>";
+                                        echo "<th>Status</th>";
                                     echo "</tr>";
                                 echo "</thead>";
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                        
-                                        echo "<td>" .$row['grade_level']."</td>";
-                                        echo "<td>" . $row['total_whole_year'] . "</td>";
+                                        echo "<td>" .$row['reference_number']."</td>";
+                                        echo "<td>" . $row['payment_method'] . "</td>";
+                                        echo "<td>" . $row['payment_type'] . "</td>";
+                                        echo "<td>" .'₱'.''. $row["payment_amount"] . "</td>";
+                                        echo "<td>". $row["created_at"] . "</td>";
                                         echo "<td>";
-                                            // Button trigger modal
-                                            echo '';
+                                            if ($row["status"] == 0) {
+                                                echo '<span class="badge bg-warning text-dark">Not yet verified</span>';
+                                            } else {
+                                                echo '<span class="badge bg-success text-dark">Verified</span>';
+                                            }
                                         echo "</td>";
                                     echo "</tr>";
                                 }
