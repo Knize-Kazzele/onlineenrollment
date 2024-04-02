@@ -173,7 +173,7 @@ else {
                                         <?php
     } elseif ($result['isVerified'] == 1) {
         // Student is already enrolled
-        echo "<div class='alert alert-success text-center' style='font-size: 22px;'>ENROLLED</div>";
+        echo "<div class='alert alert-success text-center' style='font-size: 22px;'>Verified. <br><a href='school_fees.php'>Click here to proceed to payment.</a></div>";
     }
 } else {
     // User is not registered yet, show the registration form
