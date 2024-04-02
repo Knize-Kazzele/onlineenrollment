@@ -18,14 +18,14 @@
   </li>
 
   <li class="nav-item">
-  <a class="nav-link collapsed" href="">
+  <a class="nav-link collapsed" href="cash.php">
       <i class="bi bi-cash"></i>
       <span>Cash Basis</span>
     </a>
   </li>
 
   <li class="nav-item">
-  <a class="nav-link collapsed" href="">
+  <a class="nav-link collapsed" href="installment.php">
       <i class="bi bi-credit-card-2-front-fill"></i>
       <span>Installment</span>
     </a>
