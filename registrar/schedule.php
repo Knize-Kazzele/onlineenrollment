@@ -56,7 +56,7 @@ if(!isset($registrar_id)){
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
-                            echo "<div class='alert alert-success'>Record deleted successfully.</div>";
+                            echo "<div class='alert alert-success'>Schedule deleted successfully.</div>";
                         }
                         ?>
 
@@ -67,14 +67,20 @@ if(!isset($registrar_id)){
                     require_once "config1.php";
 
                     // Attempt select query execution
-                    $sql = "SELECT schedules.*, CONCAT(users.first_name, ' ', users.last_name) AS teacher_name FROM schedules INNER JOIN users ON schedules.teacher_id = users.id";
+                    $sql = "SELECT schedules.*,subjects.subject_name,sections.section_name,rooms.room_name, CONCAT(users.first_name, ' ', users.last_name) AS teacher_name FROM schedules 
+                    INNER JOIN users ON schedules.teacher_id = users.id
+                    INNER JOIN sections on sections.section_id = schedules.section_id
+                    INNER JOIN subjects ON subjects.subject_id = schedules.subject_id
+                    INNER JOIN gradelevel ON gradelevel.gradelevel_id = schedules.grade_level
+                    INNER JOIN rooms ON rooms.room_id = schedules.room_id";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
                                 echo "<thead>";
                                     echo "<tr>";
                                         echo "<th>#</th>";
-                                        echo "<th>Grade Level</th>";
+                                        echo "<th>Grade Level and Section</th>";
+                                        echo "<th>Room</th>";
                                         echo "<th>Subject Name</th>";
                                         echo "<th>Teacher</th>";
                                         echo "<th>Start Time</th>";
@@ -86,7 +92,8 @@ if(!isset($registrar_id)){
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                         echo "<td>" . $row['id'] . "</td>";
-                                        echo "<td>" . $row['grade_level'] . "</td>";
+                                        echo "<td>"."Grade ". $row['grade_level'] ." - ".$row['section_name']. "</td>";
+                                        echo "<td>" . $row['room_name'] . "</td>";
                                         echo "<td>" . $row['subject_name'] . "</td>";
                                         echo "<td>" . $row['teacher_name'] . "</td>";
                                         echo "<td>" . $row['start_time'] . "</td>";
@@ -106,7 +113,7 @@ if(!isset($registrar_id)){
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
-                                                    Are you sure you want to delete this record?
+                                                    Are you sure you want to delete this schedule?
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

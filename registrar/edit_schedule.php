@@ -6,30 +6,39 @@ session_start();
 error_reporting(0);
 $registrar_id = $_SESSION['registrar_id'];
 
-if(!isset($registrar_id)){
-   header('location:login.php');
-}
-else{
+if (!isset($registrar_id)) {
+    header('location:login.php');
+} else {
     if(isset($_POST['edit_schedule'])) {
         // You should add your database connection logic here
         // Assuming $conn is your database connection object
 
-        $schedule_id = $_POST['schedule_id']; // Get schedule ID from the form
+        $schedule_id = $_POST['schedule_id']; // Get schedule ID from the form        
         $grade_level = $_POST['grade_level'];
-        $subject_name = $_POST['subject_name'];
-        $teacher_id = $_POST['teacher_id']; // Assuming 'teacher' is the value of teacher's ID
+        $section_id = $_POST['section'];
+        $subject_id = $_POST['subject_name'];
+        $teacher_id = $_POST['teacher_id'];
+        $room_id = $_POST['room'];
         $start_time = $_POST['start_time'];
         $end_time = $_POST['end_time'];
 
         $sql = "UPDATE schedules 
-                SET grade_level = :grade_level, subject_name = :subject_name, teacher_id = :teacher_id, 
-                    start_time = :start_time, end_time = :end_time 
+                SET 
+                grade_level = :grade_level,
+                section_id = :section_id,
+                subject_id = :subject_id, 
+                teacher_id = :teacher_id, 
+                room_id = :room_id,
+                start_time = :start_time, 
+                end_time = :end_time 
                 WHERE id = :schedule_id";
         $query = $conn->prepare($sql);
         $query->bindParam(':schedule_id', $schedule_id, PDO::PARAM_INT);
-        $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
-        $query->bindParam(':subject_name', $subject_name, PDO::PARAM_STR);
+        $query->bindParam(':grade_level', $grade_level, PDO::PARAM_INT);
+        $query->bindParam(':section_id', $section_id, PDO::PARAM_INT);
+        $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
         $query->bindParam(':teacher_id', $teacher_id, PDO::PARAM_INT);
+        $query->bindParam(':room_id', $room_id, PDO::PARAM_INT);
         $query->bindParam(':start_time', $start_time, PDO::PARAM_STR);
         $query->bindParam(':end_time', $end_time, PDO::PARAM_STR);
         
@@ -39,6 +48,7 @@ else{
             $error = "Something went wrong. Please try again";
         }
     }
+
 ?>
 
 <!DOCTYPE html>
@@ -94,13 +104,49 @@ else{
                     <?php }?>
                     <input type="hidden" name="schedule_id" value="<?php echo $schedule['id']; ?>">
                     <div class="col-md-12">
-                        <input type="text" class="form-control" placeholder="Grade Level" name="grade_level" value="<?php echo $schedule['grade_level']; ?>">
+                        <select id="grade_level" class="form-select" name="grade_level" required>
+                            <option value="" selected>Select Grade Level</option>
+                            <?php
+                                // Assuming you have a table named 'gradelevel' with 'gradelevel_id' column
+                                $sql = "SELECT * FROM gradelevel";
+                                $result = $conn->query($sql);
+                                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    $selected = ($row['gradelevel_id'] == $schedule['grade_level']) ? "selected" : "";
+                                    echo "<option value='" . $row['gradelevel_id'] . "' $selected>" . $row['gradelevel_name'] . "</option>";
+                                }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-md-12">
-                        <input type="text" class="form-control" placeholder="Subject Name" name="subject_name" value="<?php echo $schedule['subject_name']; ?>">
+                        <select id="section" class="form-select" name="section" required>
+                            <option value="" selected>Select Section</option>
+                            <?php
+                                // Assuming you have a table named 'gradelevel' with 'gradelevel_id' column
+                                $sql = "SELECT * FROM sections";
+                                $result = $conn->query($sql);
+                                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    $selected = ($row['section_id'] == $schedule['section_id']) ? "selected" : "";
+                                    echo "<option value='" . $row['section_id'] . "' $selected>" . $row['section_name'] . "</option>";
+                                }
+                            ?>
+                        </select>
                     </div>
                     <div class="col-md-12">
-                        <select id="teacher" class="form-select" name="teacher_id" required>
+                        <select id="subject_name" class="form-select" name="subject_name" required>
+                            <option value="" selected>Select Subject</option>
+                            <?php
+                                // Assuming you have a table named 'gradelevel' with 'gradelevel_id' column
+                                $sql = "SELECT * FROM subjects";
+                                $result = $conn->query($sql);
+                                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    $selected = ($row['subject_id'] == $schedule['subject_id']) ? "selected" : "";
+                                    echo "<option value='" . $row['subject_id'] . "' $selected>" . $row['subject_name'] . "</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <select id="teacher_id" class="form-select" name="teacher_id" required>
                             <option selected>Select Teacher</option>
                             <?php
                                 // Assuming you have a table named 'users' with 'role' column as 'teacher'
@@ -109,6 +155,20 @@ else{
                                 while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                                     $selected = ($row['id'] == $schedule['teacher_id']) ? "selected" : "";
                                     echo "<option value='" . $row['id'] . "' $selected>" . $row['first_name'] . " " . $row['last_name'] . "</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <select id="room" class="form-select" name="room" required>
+                            <option value="" selected>Select Room</option>
+                            <?php
+                                // Assuming you have a table named 'gradelevel' with 'gradelevel_id' column
+                                $sql = "SELECT * FROM rooms";
+                                $result = $conn->query($sql);
+                                while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                                    $selected = ($row['room_id'] == $schedule['room_id']) ? "selected" : "";
+                                    echo "<option value='" . $row['room_id'] . "' $selected>" . $row['room_name'] . "</option>";
                                 }
                             ?>
                         </select>

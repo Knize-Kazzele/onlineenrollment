@@ -56,13 +56,19 @@ if(!isset($registrar_id)){
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
-                            echo "<div class='alert alert-success'>Record deleted successfully.</div>";
+                            echo "<div class='alert alert-success'>Grade Level deleted successfully.</div>";
                         }
                         ?>
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['added']) && $_GET['added'] == 1){
                             echo "<div class='alert alert-success'>New Grade Level Added Successfully.</div>";
+                        }
+                        ?>
+                        <?php
+                        // Check if the 'deleted' parameter is set and equals to 1
+                        if(isset($_GET['edited']) && $_GET['edited'] == 1){
+                            echo "<div class='alert alert-success'>Updated Successfully.</div>";
                         }
                         ?>
 
@@ -121,8 +127,54 @@ if(!isset($registrar_id)){
                                         echo "<td>" . $row['gradelevel_name'] . "</td>";
                                         echo "<td>" . $row['gradelevel_description'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['gradelevel_id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
-                                            echo '<a href="edit_schedule.php?id='. $row['gradelevel_id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
+                                        echo '<a href="#" class="r-2 view-btn" data-bs-toggle="modal" data-bs-target="#viewGradeLevelModal'.$row['gradelevel_id'].'" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
+
+// View Grade Level Modal
+echo '
+<div class="modal fade" id="viewGradeLevelModal'.$row['gradelevel_id'].'" tabindex="-1" aria-labelledby="viewGradeLevelModalLabel'.$row['gradelevel_id'].'" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewGradeLevelModalLabel'.$row['gradelevel_id'].'">View Grade Level</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Grade Level Name: ' . $row['gradelevel_name'] . '</h5>
+        <p>Grade Level Description: ' . $row['gradelevel_description'] . '</p>
+        <!-- Add any additional information you want to display here -->
+      </div>
+    </div>
+  </div>
+</div>';
+
+                                            echo '<a href="#" class="edit-btn" data-bs-toggle="modal" data-bs-target="#editGradeLevelModal'.$row['gradelevel_id'].'"><span class="bi bi-pencil-fill"></span></a>';
+                                        
+                                        // Edit Grade Level Modal
+                                        echo '<div class="modal fade" id="editGradeLevelModal'.$row['gradelevel_id'].'" tabindex="-1" aria-labelledby="editGradeLevelModalLabel'.$row['gradelevel_id'].'" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editGradeLevelModalLabel'.$row['gradelevel_id'].'">Edit Grade Level</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Form to edit grade level -->
+                                                        <form method="post" action="edit_gradelevel.php">
+                                                            <div class="mb-3">
+                                                                <label for="editGradeLevelName" class="form-label">Grade Level Name</label>
+                                                                <input type="text" class="form-control" id="editGradeLevelName" name="editGradeLevelName" value="'.$row['gradelevel_name'].'" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="editGradeLevelDescription" class="form-label">Grade Level Description</label>
+                                                                <textarea class="form-control" id="editGradeLevelDescription" name="editGradeLevelDescription" rows="3" required>'.$row['gradelevel_description'].'</textarea>
+                                                            </div>
+                                                            <input type="hidden" name="gradelevel_id" value="'.$row['gradelevel_id'].'">
+                                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>';
                                             echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['gradelevel_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
 
                                             // Delete Modal
@@ -135,7 +187,7 @@ if(!isset($registrar_id)){
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
-                                                    Are you sure you want to delete this record?
+                                                    Are you sure you want to delete this grade level?
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
