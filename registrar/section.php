@@ -56,13 +56,19 @@ if(!isset($registrar_id)){
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
-                            echo "<div class='alert alert-success'>Record deleted successfully.</div>";
+                            echo "<div class='alert alert-success'>Section deleted successfully.</div>";
                         }
                         ?>
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['added']) && $_GET['added'] == 1){
                             echo "<div class='alert alert-success'>New Section Added Successfully.</div>";
+                        }
+                        ?>
+                        <?php
+                        // Check if the 'deleted' parameter is set and equals to 1
+                        if(isset($_GET['edited']) && $_GET['edited'] == 1){
+                            echo "<div class='alert alert-success'>Updated Successfully.</div>";
                         }
                         ?>
 
@@ -121,8 +127,54 @@ if(!isset($registrar_id)){
                                         echo "<td>" . $row['section_name'] . "</td>";
                                         echo "<td>" . $row['section_description'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['section_id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
-                                            echo '<a href="edit_schedule.php?id='. $row['section_id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
+                                        echo '<a href="#" class="r-2 view-btn" data-bs-toggle="modal" data-bs-target="#viewSectionModal'.$row['section_id'].'" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
+
+                                        // View Section Modal
+                                        echo '
+                                        <div class="modal fade" id="viewSectionModal'.$row['section_id'].'" tabindex="-1" aria-labelledby="viewSectionModalLabel'.$row['section_id'].'" aria-hidden="true">
+                                          <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                              <div class="modal-header">
+                                                <h5 class="modal-title" id="viewSectionModalLabel'.$row['section_id'].'">View Section</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                              </div>
+                                              <div class="modal-body">
+                                                <h5>Section Name: ' . $row['section_name'] . '</h5>
+                                                <p>Section Description: ' . $row['section_description'] . '</p>
+                                                <!-- Add any additional information you want to display here -->
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>';
+                                        
+                                        echo '<a href="#" class="edit-btn" data-bs-toggle="modal" data-bs-target="#editSectionModal'.$row['section_id'].'"><span class="bi bi-pencil-fill"></span></a>';
+                                        
+                                        // Edit Grade Level Modal
+                                        echo '<div class="modal fade" id="editSectionModal'.$row['section_id'].'" tabindex="-1" aria-labelledby="editSectionModalLabel'.$row['section_id'].'" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editSectionModalLabel'.$row['section_id'].'">Edit Section</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Form to edit grade level -->
+                                                        <form method="post" action="edit_section.php">
+                                                            <div class="mb-3">
+                                                                <label for="editSectionName" class="form-label">Section Name</label>
+                                                                <input type="text" class="form-control" id="editSectionName" name="editSectionName" value="'.$row['section_name'].'" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="editSectionDescription" class="form-label">Section Description</label>
+                                                                <textarea class="form-control" id="editSectionDescription" name="editSectionDescription" rows="3" required>'.$row['section_description'].'</textarea>
+                                                            </div>
+                                                            <input type="hidden" name="section_id" value="'.$row['section_id'].'">
+                                                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>';
                                             echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['section_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
 
                                             // Delete Modal
@@ -135,7 +187,7 @@ if(!isset($registrar_id)){
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
-                                                    Are you sure you want to delete this record?
+                                                    Are you sure you want to delete this section?
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

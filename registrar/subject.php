@@ -56,13 +56,19 @@ if(!isset($registrar_id)){
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
-                            echo "<div class='alert alert-success'>Record deleted successfully.</div>";
+                            echo "<div class='alert alert-success'>Subject deleted successfully.</div>";
                         }
                         ?>
                         <?php
                         // Check if the 'deleted' parameter is set and equals to 1
                         if(isset($_GET['added']) && $_GET['added'] == 1){
                             echo "<div class='alert alert-success'>New Subject Added Successfully.</div>";
+                        }
+                        ?>
+                        <?php
+                        // Check if the 'deleted' parameter is set and equals to 1
+                        if(isset($_GET['edited']) && $_GET['edited'] == 1){
+                            echo "<div class='alert alert-success'>Updated Successfully.</div>";
                         }
                         ?>
 
@@ -121,9 +127,55 @@ if(!isset($registrar_id)){
                                         echo "<td>" . $row['subject_name'] . "</td>";
                                         echo "<td>" . $row['subject_description'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['subject_id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
-                                            echo '<a href="edit_schedule.php?id='. $row['subject_id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
-                                            echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['subject_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
+                                        echo '<a href="#" class="r-2 view-btn" data-bs-toggle="modal" data-bs-target="#viewModal'.$row['subject_id'].'" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
+
+// View Modal
+echo '
+<div class="modal fade" id="viewModal'.$row['subject_id'].'" tabindex="-1" aria-labelledby="viewModalLabel'.$row['subject_id'].'" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModalLabel'.$row['subject_id'].'">View Subject</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h5>Subject Name: ' . $row['subject_name'] . '</h5>
+        <p>Subject Description: ' . $row['subject_description'] . '</p>
+        <!-- Add any additional information you want to display here -->
+      </div>
+    </div>
+  </div>
+</div>';
+
+                                            echo '<a href="#" class="m-2 edit-btn" data-bs-toggle="modal" data-bs-target="#editModal'.$row['subject_id'].'" title="Edit Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
+                                            
+                                            // Edit Modal
+                                            echo '
+                                            <div class="modal fade" id="editModal'.$row['subject_id'].'" tabindex="-1" aria-labelledby="editModalLabel'.$row['subject_id'].'" aria-hidden="true">
+                                              <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                  <div class="modal-header">
+                                                    <h5 class="modal-title" id="editModalLabel'.$row['subject_id'].'">Edit Subject</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <!-- Form to edit subject -->
+                                                    <form id="editForm'.$row['subject_id'].'" method="post" action="edit_subject.php">
+                                                        <input type="hidden" name="subject_id" value="'.$row['subject_id'].'">
+                                                        <div class="mb-3">
+                                                            <label for="editSubjectName'.$row['subject_id'].'" class="form-label">Subject Name</label>
+                                                            <input type="text" class="form-control" id="editSubjectName'.$row['subject_id'].'" name="subjectName" value="'.$row['subject_name'].'" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="editSubjectDescription'.$row['subject_id'].'" class="form-label">Subject Description</label>
+                                                            <textarea class="form-control" id="editSubjectDescription'.$row['subject_id'].'" name="subjectDescription" rows="3" required>'.$row['subject_description'].'</textarea>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                    </form>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>';                                            echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['subject_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
 
                                             // Delete Modal
                                             echo '
@@ -135,7 +187,7 @@ if(!isset($registrar_id)){
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
-                                                    Are you sure you want to delete this record?
+                                                    Are you sure you want to delete this subject?
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
