@@ -21,7 +21,9 @@ else {
         $sname = $_POST['sname'];
         $dob = $_POST['dob'];
         $pob = $_POST['pob'];
+        $email = $_POST['email'];
         $age = $_POST['age'];
+        $address = $_POST['address'];
         $father_name = $_POST['father_name'];
         $business_address_father = $_POST['business_address_father'];
         $telephone_father = $_POST['telephone_father'];
@@ -66,14 +68,16 @@ else {
         }
 
         // Prepare and execute SQL query
-        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, image_path, isVerified) 
-        VALUES (:parent_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, :image_path, 0)";
+        $sql = "INSERT INTO student (userId, name, dob, pob, email, age, address, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, image_path, isVerified) 
+        VALUES (:parent_id, :sname, :dob, :pob, :email, :age, :address, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, :image_path, 0)";
         $query = $conn->prepare($sql);
         $query->bindParam(':parent_id', $parent_id, PDO::PARAM_INT);
         $query->bindParam(':sname', $sname, PDO::PARAM_STR);
         $query->bindParam(':dob', $dob, PDO::PARAM_STR);
         $query->bindParam(':pob', $pob, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->bindParam(':age', $age, PDO::PARAM_INT);
+        $query->bindParam(':address', $address, PDO::PARAM_STR);
         $query->bindParam(':father_name', $father_name, PDO::PARAM_STR);
         $query->bindParam(':business_address_father', $business_address_father, PDO::PARAM_STR);
         $query->bindParam(':telephone_father', $telephone_father, PDO::PARAM_STR);
@@ -173,11 +177,11 @@ else {
                                 <div class="row mb-3">
                                 <div class="col-md-9" style="margin-top: 120px;">
     <label for="sname" class="form-label">Name</label>
-    <input type="text" class="form-control" id="sname" name="sname">
+    <input type="text" class="form-control" id="sname" name="sname" required>
 </div>
 <div class="col-md-3 text-center">
     <img id="preview" src="../images/profile.jpg" alt="Profile Picture" class="mx-auto d-block" style="width: 200px; height: 200px; cursor: pointer;" onclick="triggerFileUpload()">
-    <input type="file" accept="image/*"  class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;">
+    <input type="file" accept="image/*"  class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;" required>
     <label for="image" class="form-label">Upload Image (2x2)</label>
 </div>
 
@@ -186,68 +190,76 @@ else {
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="dob" class="form-label">Date of Birth</label>
-            <input type="date" class="form-control" id="dob" name="dob">
+            <input type="date" class="form-control" id="dob" name="dob" required>
         </div>
         <div class="col-md-6">
             <label for="pob" class="form-label">Place of Birth</label>
-            <input type="text" class="form-control" id="pob" name="pob">
+            <input type="text" class="form-control" id="pob" name="pob" required>
         </div>
     </div>
     <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+        </div>
         <div class="col-md-1">
             <label for="age" class="form-label">Age</label>
             <input type="text" class="form-control" id="age" name="age" readonly>
+        </div>
+        <div class="col-md-8">
+            <label for="address" class="form-label">Complete Address</label>
+            <input type="text" class="form-control" id="address" name="address" required>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="father_name" class="form-label">Name of Father</label>
-            <input type="text" class="form-control" id="father_name" name="father_name">
+            <input type="text" class="form-control" id="father_name" name="father_name" required>
         </div>
         <div class="col-md-6">
-            <label for="business_address_father" class="form-label">Business Address (Father)</label>
-            <input type="text" class="form-control" id="business_address_father" name="business_address_father">
+            <label for="business_address_father" class="form-label">Address (Father)</label>
+            <input type="text" class="form-control" id="business_address_father" name="business_address_father" required>
         </div>
         <div class="col-md-6">
             <label for="telephone_father" class="form-label">Telephone (Father)</label>
-            <input type="tel" class="form-control" id="telephone_father" name="telephone_father">
+            <input type="tel" class="form-control" id="telephone_father" name="telephone_father" required>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="mother_name" class="form-label">Name of Mother</label>
-            <input type="text" class="form-control" id="mother_name" name="mother_name">
+            <input type="text" class="form-control" id="mother_name" name="mother_name" required>
         </div>
         <div class="col-md-6">
-            <label for="business_address_mother" class="form-label">Business Address (Mother)</label>
-            <input type="text" class="form-control" id="business_address_mother" name="business_address_mother">
+            <label for="business_address_mother" class="form-label">Address (Mother)</label>
+            <input type="text" class="form-control" id="business_address_mother" name="business_address_mother" required>
         </div>
         <div class="col-md-6">
             <label for="telephone_mother" class="form-label">Telephone (Mother)</label>
-            <input type="tel" class="form-control" id="telephone_mother" name="telephone_mother">
+            <input type="tel" class="form-control" id="telephone_mother" name="telephone_mother" required>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="guardian" class="form-label">Guardian (for absent parent/s)</label>
-            <input type="text" class="form-control" id="guardian" name="guardian">
+            <input type="text" class="form-control" id="guardian" name="guardian" required>
         </div>
     </div>
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="previous_school" class="form-label">Previous School Attended</label>
-            <input type="text" class="form-control" id="previous_school" name="previous_school">
+            <input type="text" class="form-control" id="previous_school" name="previous_school" required>
         </div>
         <div class="col-md-6">
             <label for="school_address" class="form-label">Address of School</label>
-            <input type="text" class="form-control" id="school_address" name="school_address">
+            <input type="text" class="form-control" id="school_address" name="school_address" required>
         </div>
     </div>
     <hr size=8 noshade>
     <div class="row mb-3">
     <div class="col-md-6">
         <label for="grade_level" class="form-label">Grade Level</label>
-        <select class="form-select" id="grade_level" name="grade_level">
+        <select class="form-select" id="grade_level" name="grade_level" required>
             <option value="1">Grade 1</option>
             <option value="2">Grade 2</option>
             <!-- Add more options for other grade levels -->
@@ -260,8 +272,9 @@ else {
         <li>Birth Certificate Xerox</li>
         <li>Good moral Certificate</li>
     </ul>
-    <input type="file" class="form-control" id="requirements" accept="application/pdf" name="requirements[]" multiple>
+    <input type="file" class="form-control" id="requirements" accept="application/pdf" name="requirements[]" multiple required>
     <!-- Allow multiple file uploads for requirements -->
+    <small><i>Only PDF files are allowed.</i></small>
 </div>
 </div>
 <center>

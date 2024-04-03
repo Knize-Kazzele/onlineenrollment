@@ -24,6 +24,34 @@
     </a>
   </li>
 
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="subject.php">
+  <i class="bi bi-book-fill"></i>
+      <span>Subject</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="gradelevel.php">
+      <i class="bi bi-mortarboard-fill"></i>
+      <span>Grade Level</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="section.php">
+  <i class="bi bi-list"></i>
+      <span>Section</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="room.php">
+  <i class="bi bi-door-closed-fill"></i>
+      <span>Room</span>
+    </a>
+  </li>
+
  
 
 </ul>

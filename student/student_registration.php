@@ -24,13 +24,22 @@ else {
     $full_name = isset($user['first_name']) ? $user['first_name'] : '';
     $full_name .= isset($user['last_name']) ? ' ' . $user['last_name'] : '';
 
+    if ($user['role'] == 'student') {
+        $student_email = isset($user['email']) ? $user['email'] : '';
+    } else {
+        // No action needed in this case
+        echo ""; // Blank echo
+    }
+
     // Check if the form is submitted
     if (isset($_POST['add_registration'])) {
         // Retrieve form data
         $sname = $_POST['sname'];
         $dob = $_POST['dob'];
         $pob = $_POST['pob'];
+        $email = $_POST['email'];        
         $age = $_POST['age'];
+        $address = $_POST['address'];
         $father_name = $_POST['father_name'];
         $business_address_father = $_POST['business_address_father'];
         $telephone_father = $_POST['telephone_father'];
@@ -75,14 +84,16 @@ else {
         }
 
         // Prepare and execute SQL query
-        $sql = "INSERT INTO student (userId, name, dob, pob, age, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, image_path, isVerified) 
-        VALUES (:student_id, :sname, :dob, :pob, :age, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, :image_path, 0)";
+        $sql = "INSERT INTO student (userId, name, dob, pob, email, age, address, father_name, business_address_father, telephone_father, mother_name, business_address_mother, telephone_mother, guardian, previous_school, school_address, grade_level, requirements, image_path, isVerified) 
+        VALUES (:student_id, :sname, :dob, :pob, :email, :age, :address, :father_name, :business_address_father, :telephone_father, :mother_name, :business_address_mother, :telephone_mother, :guardian, :previous_school, :school_address, :grade_level, :requirements, :image_path, 0)";
         $query = $conn->prepare($sql);
         $query->bindParam(':student_id', $student_id, PDO::PARAM_INT);
         $query->bindParam(':sname', $sname, PDO::PARAM_STR);
         $query->bindParam(':dob', $dob, PDO::PARAM_STR);
         $query->bindParam(':pob', $pob, PDO::PARAM_STR);
+        $query->bindParam(':email', $email, PDO::PARAM_STR);
         $query->bindParam(':age', $age, PDO::PARAM_INT);
+        $query->bindParam(':address', $address, PDO::PARAM_STR);
         $query->bindParam(':father_name', $father_name, PDO::PARAM_STR);
         $query->bindParam(':business_address_father', $business_address_father, PDO::PARAM_STR);
         $query->bindParam(':telephone_father', $telephone_father, PDO::PARAM_STR);
@@ -203,9 +214,17 @@ else {
         </div>
     </div>
     <div class="row mb-3">
+        <div class="col-md-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" name="email" value="<?php echo isset($student_email) ? htmlspecialchars($student_email) : ''; ?>">
+        </div>
         <div class="col-md-1">
             <label for="age" class="form-label">Age</label>
             <input type="text" class="form-control" id="age" name="age" readonly>
+        </div>
+        <div class="col-md-8">
+            <label for="address" class="form-label">Address</label>
+            <input type="text" class="form-control" id="address" name="address">
         </div>
     </div>
     <div class="row mb-3">
@@ -214,7 +233,7 @@ else {
             <input type="text" class="form-control" id="father_name" name="father_name">
         </div>
         <div class="col-md-6">
-            <label for="business_address_father" class="form-label">Business Address (Father)</label>
+            <label for="business_address_father" class="form-label">Address (Father)</label>
             <input type="text" class="form-control" id="business_address_father" name="business_address_father">
         </div>
         <div class="col-md-6">
@@ -228,7 +247,7 @@ else {
             <input type="text" class="form-control" id="mother_name" name="mother_name">
         </div>
         <div class="col-md-6">
-            <label for="business_address_mother" class="form-label">Business Address (Mother)</label>
+            <label for="business_address_mother" class="form-label">Address (Mother)</label>
             <input type="text" class="form-control" id="business_address_mother" name="business_address_mother">
         </div>
         <div class="col-md-6">
@@ -271,6 +290,7 @@ else {
     </ul>
     <input type="file" class="form-control" id="requirements" accept="application/pdf" name="requirements[]" multiple>
     <!-- Allow multiple file uploads for requirements -->
+    <small><i>Only PDF files are allowed.</i></small>
 </div>
 </div>
 <center>
