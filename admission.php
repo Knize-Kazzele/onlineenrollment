@@ -175,8 +175,40 @@
     <div class="text-center">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
+    <medium><b><i>Note: Please login to submit your requirements. <a href="#" id="viewRequirements">Click here</a> to view the requirements.</i></b></medium>
+
+<!-- Modal -->
+<div class="modal fade" id="requirementsModal" tabindex="-1" role="dialog" aria-labelledby="requirementsModalLabel" aria-hidden="true" style="margin-top: 50px;">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="requirementsModalLabel">Requirements</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Your requirements content goes here -->
+        <ul>
+              <li>F138 (CARD)</li>
+              <li>Birth Certificate Xerox</li>
+              <li>Good moral Certificate</li>
+            </ul>
+      </div>
+    </div>
+  </div>
+</div>
 </form>
 
+<script>
+// Get the link to view requirements
+var link = document.getElementById("viewRequirements");
+
+// When the user clicks on the link, open the modal
+link.onclick = function() {
+  $('#requirementsModal').modal('show');
+}
+</script>
 <script>
     function validateForm() {
         var password = document.getElementById("password").value;
@@ -190,18 +222,6 @@
     }
 </script>
 
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-header">
-            <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-              Submission of Requirements
-            </a>
-          </div>
-          <div id="collapseThree" class="collapse" data-parent="#accordion">
-            <div class="card-body">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
             </div>
           </div>
         </div>
