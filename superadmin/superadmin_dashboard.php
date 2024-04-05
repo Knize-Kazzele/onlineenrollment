@@ -45,66 +45,6 @@ if(!isset($superadmin_id)){
 
   <!-- Template Main CSS File -->
   <link href="../assets/css/style.css" rel="stylesheet">
-  <style>
-    .card-counter{
-    box-shadow: 2px 2px 10px #DADADA;
-    margin: 5px;
-    padding: 20px 10px;
-    background-color: #fff;
-    height: 100px;
-    border-radius: 5px;
-    transition: .3s linear all;
-  }
-
-  .card-counter:hover{
-    box-shadow: 4px 4px 20px #DADADA;
-    transition: .3s linear all;
-  }
-
-  .card-counter.primary{
-    background-color: #007bff;
-    color: #FFF;
-  }
-
-  .card-counter.danger{
-    background-color: #ef5350;
-    color: #FFF;
-  }  
-
-  .card-counter.success{
-    background-color: #66bb6a;
-    color: #FFF;
-  }  
-
-  .card-counter.info{
-    background-color: #26c6da;
-    color: #FFF;
-  }  
-
-  .card-counter i{
-    font-size: 5em;
-    opacity: 0.2;
-  }
-
-  .card-counter .count-numbers{
-    position: absolute;
-    right: 35px;
-    top: 20px;
-    font-size: 32px;
-    display: block;
-  }
-
-  .card-counter .count-name{
-    position: absolute;
-    right: 35px;
-    top: 65px;
-    font-style: italic;
-    text-transform: capitalize;
-    opacity: 0.5;
-    display: block;
-    font-size: 18px;
-  }
-  </style>
 </head>
 
 <body>
@@ -113,57 +53,257 @@ if(!isset($superadmin_id)){
     include 'header.php';
     include 'sidebar.php';
 ?>
-  <main id="main" class="main">
+ <main id="main" class="main">
 
 <div class="pagetitle">
-  <h1>Dashboard</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-      <li class="breadcrumb-item active">Dashboard</li>
-    </ol>
-  </nav>
+    <h1>Dashboard</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+    </nav>
 </div><!-- End Page Title -->
-<div class="row">
-<div class="col-lg-12">
-<div class="container">
-    <div class="row">
-    <div class="col-md-3">
-      <div class="card-counter primary">
-        <i class="fa fa-user"></i>
-        <span class="count-numbers">12</span>
-        <span class="count-name">Super Admin</span>
-      </div>
-    </div>
 
-    <div class="col-md-3">
-      <div class="card-counter danger">
-        <i class="fa fa-user"></i>
-        <span class="count-numbers">599</span>
-        <span class="count-name">Registrar</span>
-      </div>
-    </div>
+<section class="section dashboard">
+      <div class="row">
 
-    <div class="col-md-3">
-      <div class="card-counter success">
-        <i class="fa fa-user"></i>
-        <span class="count-numbers">6875</span>
-        <span class="count-name">Accounting</span>
-      </div>
-    </div>
+        <!-- Left side columns -->
+          <div class="row">
 
-    <div class="col-md-3">
-      <div class="card-counter info">
-        <i class="fa fa-users"></i>
-        <span class="count-numbers">35</span>
-        <span class="count-name">Teacher</span>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
+            <!-- Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Teachers</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/teacher.png" alt="Teacher Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                      include 'config1.php'; // Include your database configuration file
+
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS teacher_count FROM users WHERE role = 'teacher'";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $teacher_count = $row["teacher_count"];
+                      } else {
+                          $teacher_count = 0;
+                      }
+
+                      
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$teacher_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Students</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/student.png" alt="Student Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS student_count FROM users WHERE role = 'student'";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $student_count = $row["student_count"];
+                      } else {
+                          $student_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$student_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Parents</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/parents.png" alt="Parent Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS parent_count FROM users WHERE role = 'parent'";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $parent_count = $row["parent_count"];
+                      } else {
+                          $parent_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$parent_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Registrar</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/register.png" alt="Registrar Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS registrar_count FROM users WHERE role = 'registrar'";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $registrar_count = $row["registrar_count"];
+                      } else {
+                          $registrar_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$registrar_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+        </div>
+
+        <div class="row justify-content-center">
+
+        <!-- Left side columns -->
+          <div class="row justify-content-center">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Accounting</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/accountant.png" alt="Accounting Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS accounting_count FROM users WHERE role = 'accounting'";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $accounting_count = $row["accounting_count"];
+                      } else {
+                          $accounting_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$accounting_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Superadmin</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/administrator.png" alt="Student Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS superadmin_count FROM users WHERE role = 'superadmin'";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $superadmin_count = $row["superadmin_count"];
+                      } else {
+                          $superadmin_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$superadmin_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+          </div>
+
+        
+</section>
+
 </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

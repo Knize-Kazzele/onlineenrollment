@@ -61,13 +61,88 @@ if(!isset($accounting_id)){
     </ol>
   </nav>
 </div><!-- End Page Title -->
-<div class="row">
-<div class="col-lg-12">
+<section class="section dashboard">
+<div class="row justify-content-center">
 
+<!-- Left side columns -->
+  <div class="row justify-content-center">
 
+    <!-- Sales Card -->
+    <div class="col-xxl-3 col-md-6">
+      <div class="card info-card sales-card">
+        <div class="card-body">
+          <h5 class="card-title">Pending Cash Payment</h5>
 
-</div>
-</div>
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <img src="../images/payment-method.png" alt="Pending Count" style="margin-left: 40px; width: 100px; height: 100px;">
+            </div>
+            <?php              
+
+              include 'config1.php';
+              // Check connection
+              if ($link->connect_error) {
+                  die("Connection failed: " . $link->connect_error);
+              }
+
+              // Query to count teachers
+              $query = "SELECT COUNT(*) AS pending_cash FROM transactions WHERE status = 0 AND payment_type= 'cash'";
+              $result = $link->query($query);
+
+              if ($result && $result->num_rows > 0) {
+                  $row = $result->fetch_assoc();
+                  $pending_cash = $row["pending_cash"];
+              } else {
+                  $pending_cash = 0;
+              }
+
+            ?>
+            <div class="ps-3" style="margin-left: 50px;">
+              <h1><?php echo "$pending_cash"; ?></h1>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- End Sales Card -->
+    <div class="col-xxl-3 col-md-6">
+      <div class="card info-card sales-card">
+        <div class="card-body">
+          <h5 class="card-title">Pending Installment Payment</h5>
+
+          <div class="d-flex align-items-center">
+            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <img src="../images/calendar.png" alt="Student Count" style="margin-left: 40px; width: 100px; height: 100px;">
+            </div>
+            <?php
+            
+              // Check connection
+              if ($link->connect_error) {
+                  die("Connection failed: " . $link->connect_error);
+              }
+
+              // Query to count teachers
+              $query = "SELECT COUNT(*) AS pending_installment FROM transactions WHERE status = 0 AND payment_type= 'installment'";
+              $result = $link->query($query);
+
+              if ($result && $result->num_rows > 0) {
+                  $row = $result->fetch_assoc();
+                  $pending_installment = $row["pending_installment"];
+              } else {
+                  $pending_installment = 0;
+              }
+
+            ?>
+            <div class="ps-3" style="margin-left: 50px;">
+              <h1><?php echo "$pending_installment"; ?></h1>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- End Sales Card -->
+  </div>
+</section>
 </div>
 </main><!-- End #main -->
 

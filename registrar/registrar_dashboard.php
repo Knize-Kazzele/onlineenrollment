@@ -61,13 +61,171 @@ if(!isset($registrar_id)){
     </ol>
   </nav>
 </div><!-- End Page Title -->
-<div class="row">
-<div class="col-lg-12">
+<section class="section dashboard">
+      <div class="row">
 
+        <!-- Left side columns -->
+          <div class="row">
 
+            <!-- Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Enrollment</h5>
 
-</div>
-</div>
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/inscription.png" alt="Enrollment Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                      include 'config1.php'; // Include your database configuration file
+
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS verified_enrollee FROM student WHERE isVerified = 1";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $verified_enrollee = $row["verified_enrollee"];
+                      } else {
+                          $verified_enrollee = 0;
+                      }
+
+                      $query_not_verified = "SELECT COUNT(*) AS not_verified_enrollee FROM student WHERE isVerified = 0";
+                      $result_not_verified = $link->query($query_not_verified);
+
+                      if ($result_not_verified && $result_not_verified->num_rows > 0) {
+                          $row_not_verified = $result_not_verified->fetch_assoc();
+                          $not_verified_enrollee = $row_not_verified["not_verified_enrollee"];
+                      } else {
+                          $not_verified_enrollee = 0;
+                      }
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h5>Verified: <?php echo "$verified_enrollee"; ?></h5>
+                      <h5>Not yet Verified: <?php echo "$not_verified_enrollee"; ?></h5>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Subjects</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/books.png" alt="Subject Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS subject_count FROM subjects";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $subject_count = $row["subject_count"];
+                      } else {
+                          $subject_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$subject_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Sections</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/chapter.png" alt="Sections Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS section_count FROM sections";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $section_count = $row["section_count"];
+                      } else {
+                          $section_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$section_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            <div class="col-xxl-3 col-md-3">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Rooms</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <img src="../images/classroom.png" alt="Classroom Count" style="margin-left: 40px; width: 100px; height: 100px;">
+                    </div>
+                    <?php
+                    
+                      // Check connection
+                      if ($link->connect_error) {
+                          die("Connection failed: " . $link->connect_error);
+                      }
+
+                      // Query to count teachers
+                      $query = "SELECT COUNT(*) AS room_count FROM rooms";
+                      $result = $link->query($query);
+
+                      if ($result && $result->num_rows > 0) {
+                          $row = $result->fetch_assoc();
+                          $room_count = $row["room_count"];
+                      } else {
+                          $room_count = 0;
+                      }
+
+                    ?>
+                    <div class="ps-3" style="margin-left: 50px;">
+                      <h1><?php echo "$room_count"; ?></h1>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+        </div>
+</section>
 </div>
 </main><!-- End #main -->
 

@@ -68,16 +68,33 @@ if(!isset($student_id)){
 
       <div class="card">
         <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+          <?php
+              // Connect to your database (replace with actual database credentials)
+              $conn = mysqli_connect("localhost", "root", "", "enrollment");
 
-          <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-          <h2>Kevin Anderson</h2>
-          <h3>Web Designer</h3>
-          <div class="social-links mt-2">
-            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
-            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
-            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
-          </div>
+              // Check connection
+              if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+              }
+
+              // SQL query to fetch user profile
+              $sql = "SELECT * FROM student WHERE userId = $student_id"; // Assuming user_id 1 for demonstration
+
+              $result = mysqli_query($conn, $sql);
+
+              if (mysqli_num_rows($result) > 0) {
+                // Output data of each row
+                while($row = mysqli_fetch_assoc($result)) {
+                  echo '<img src="' . $row["image_path"] . '" alt="Profile" class="rounded-circle" width="150" height="150">';
+                  echo '<h2>' . $row["name"] . '</h2>';
+                  echo '<h3>' . $row["grade_level"] . '</h3>';
+                }
+              } else {
+                echo "0 results";
+              }
+
+              mysqli_close($conn);
+            ?>
         </div>
       </div>
 
@@ -91,52 +108,138 @@ if(!isset($student_id)){
           <ul class="nav nav-tabs nav-tabs-bordered">
 
             <li class="nav-item">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Profile</button>
             </li>
+            <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Parent/Guardian</button>
+                </li>
           </ul>
           <div class="tab-content pt-2">
 
             <div class="tab-pane fade show active profile-overview" id="profile-overview">
               <h5 class="card-title">Profile Details</h5>
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label ">Full Name</div>
-                <div class="col-lg-9 col-md-8">Kevin Anderson</div>
-              </div>
+              <?php
+              // Connect to your database (replace with actual database credentials)
+              $conn = mysqli_connect("localhost", "root", "", "enrollment");
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Company</div>
-                <div class="col-lg-9 col-md-8">Lueilwitz, Wisoky and Leuschke</div>
-              </div>
+              // Check connection
+              if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+              }
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Job</div>
-                <div class="col-lg-9 col-md-8">Web Designer</div>
-              </div>
+              // SQL query to fetch user profile
+              $sql = "SELECT * FROM student WHERE userId = $student_id"; // Assuming user_id 1 for demonstration
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Country</div>
-                <div class="col-lg-9 col-md-8">USA</div>
-              </div>
+              $result = mysqli_query($conn, $sql);
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Address</div>
-                <div class="col-lg-9 col-md-8">A108 Adam Street, New York, NY 535022</div>
-              </div>
+              if (mysqli_num_rows($result) > 0) {
+                // Output data of each row
+                while($row = mysqli_fetch_assoc($result)) {
+                  echo'<div class="row">';
+                  echo'<div class="col-lg-3 col-md-4 label ">Date of Birth : </div>';
+                  echo'<div class="col-lg-9 col-md-8">'. $row["dob"] .'</div>';
+                  echo'</div>';
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Phone</div>
-                <div class="col-lg-9 col-md-8">(436) 486-3538 x29071</div>
-              </div>
+                  echo'<div class="row">';
+                  echo'<div class="col-lg-3 col-md-4 label ">Place of Birth : </div>';
+                  echo'<div class="col-lg-9 col-md-8">'. $row["pob"] .'</div>';
+                  echo'</div>';
 
-              <div class="row">
-                <div class="col-lg-3 col-md-4 label">Email</div>
-                <div class="col-lg-9 col-md-8">k.anderson@example.com</div>
-              </div>
+                  echo'<div class="row">';
+                    echo'<div class="col-lg-3 col-md-4 label ">Email Address : </div>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["email"] .'</div>';
+                  echo'</div>';
+
+                  echo'<div class="row">';
+                  echo'<div class="col-lg-3 col-md-4 label ">Address : </div>';
+                  echo'<div class="col-lg-9 col-md-8">'. $row["name"] .'</div>';
+                  echo'</div>';
+                }
+
+                
+
+              } else {
+                echo "0 results";
+              }
+
+              mysqli_close($conn);
+            ?>
 
             </div>
 
+            <div class="tab-pane fade profile-edit" id="profile-edit">
+            <h5 class="card-title">Parents/Guardian</h5>
+            <?php
+              // Connect to your database (replace with actual database credentials)
+              $conn = mysqli_connect("localhost", "root", "", "enrollment");
+
+              // Check connection
+              if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+              }
+
+              // SQL query to fetch user profile
+              $sql = "SELECT * FROM student WHERE userId = $student_id"; // Assuming user_id 1 for demonstration
+
+              $result = mysqli_query($conn, $sql);
+
+              if (mysqli_num_rows($result) > 0) {
+                // Output data of each row
+                while($row = mysqli_fetch_assoc($result)) {
+                    
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Father : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["father_name"] .'</div>';
+                    echo'</div>';
+
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Father Address : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["business_address_father"] .'</div>';
+                    echo'</div>';
+
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Telephone Number : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["telephone_father"] .'</div>';
+                    echo'</div>';
+
+                    echo'<br>';
+
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Mother : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["mother_name"] .'</div>';
+                    echo'</div>';
+
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Mother Address : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["business_address_mother"] .'</div>';
+                    echo'</div>';
+
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Telephone Number : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["telephone_mother"] .'</div>';
+                    echo'</div>';
+
+                    echo'<br>';
+
+                    echo'<div class="row">';
+                    echo '<label class="col-md-4 col-lg-3">Guardian : </label>';
+                    echo'<div class="col-lg-9 col-md-8">'. $row["guardian"] .'</div>';
+                    echo'</div>';
+
+                  }
+                } else {
+                  echo "0 results";
+                }
+  
+                mysqli_close($conn);
+              ?>
+
+                </div>
+
           </div><!-- End Bordered Tabs -->
+
+          
 
         </div>
       </div>
