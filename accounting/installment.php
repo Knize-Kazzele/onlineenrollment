@@ -84,7 +84,13 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                     echo "<tr>";
                                        
                                     echo "<td>" .$row['reference_number']."</td>";
-                                    echo "<td>" . $row['payment_method'] . "</td>";
+                                    echo "<td>" . $row['payment_method'];
+                                    if ($row["payment_method"] == 'GCash') {
+                                        // Display attachment view
+                                        echo '<a href="'.$row['screenshot_path'].'" target="_blank"> - View Screenshot</a>';
+                                    } else {
+                                        echo '';
+                                    }
                                     echo "<td>" .'₱'.''. $row["payment_amount"] . "</td>";
                                     echo "<td>". $row["created_at"] . "</td>";
                                     echo "<td>";

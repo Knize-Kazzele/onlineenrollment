@@ -7,6 +7,11 @@ if (!isset($parent_id)) {
     header('location: login.php');
     exit; // Add exit to stop further execution
 }
+function generateReferenceNumber() {
+    // Generate a random number
+    $random_number = mt_rand(1000000000, 9999999999);
+    return $random_number;
+}
 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -41,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit; // Stop further execution if file upload is required but not provided
         }
     } elseif ($payment_method === 'Cash') {
-        $reference_number = isset($_POST['reference_number']) ? $_POST['reference_number'] : null;
+        $reference_number = generateReferenceNumber();
         // For Cash payments, do not process file upload
         $screenshot_path = '';
     }

@@ -19,7 +19,7 @@ if(!isset($student_id)){
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Student</title>
+    <title>Parent</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -116,7 +116,11 @@ if(!isset($student_id)){
                 <div class="col-lg-4">
                     <div class="card">
                         <div class="card-body">
-                            <div style="text-align: center;">
+                            <div>
+                            <table class="table table-hover">
+                   
+                    <tbody>
+                    
                             <?php
 // Include config file
 require_once "config1.php";
@@ -127,23 +131,84 @@ $sql = "SELECT *
         INNER JOIN payments on student.grade_level = payments.grade_level 
         WHERE student.userId = $student_id";
 if($result = mysqli_query($link, $sql)){
+    // Add your additional query here
+    $sql2 = "SELECT *, COUNT(*) AS transaction_count FROM transactions WHERE user_id = $student_id";
+    if($result2 = mysqli_query($link, $sql2)){
+        $row2 = mysqli_fetch_assoc($result2);
+        $transactionCount = $row2['transaction_count'];
+        mysqli_free_result($result2);
+    } else {
+        echo "Oops! Something went wrong while checking transactions.";
+        exit; // Exit if there's an error
+    }
+
+    // If there are transactions, disable the button or display a message
+    if($transactionCount > 0) {
+        echo'<div style="text-align: center; margin-top:30px;">';
+        echo '<button type="button" class="btn btn-primary" disabled>Payments Already Made<br>Please proceed to the accounting</button>';
+        echo'</div>';
+    } else {
+       
+    
     if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_array($result)) {
-            echo ' <h5 class="card-title">Balance: ₱'.$row['total_whole_year'].'</h5>';
+
+                        echo'<tr>';
+                        echo'<td class="col-md-9"><em>Total Tuition Fee:</em></h4></td>';
+                        echo'<td>   </td>'; 
+                        echo'<td>   </td>';
+                        echo'<td class="col-md-1 text-center">₱'.$row['total_whole_year'].'</td>';
+                        echo'</tr>';
+                        
+                        echo'<tr>';
+                        echo'<td class="col-md-9"><em>Book Fee:</em></h4></td>';
+                        echo'<td>   </td>'; 
+                        echo'<td>   </td>';
+                        echo'<td class="col-md-1 text-center">₱'.$row['books'].'</td>';
+                        echo'</tr>';
+
+                        echo'<tr>';
+                        echo'<td class="col-md-9"><em>School Uniform Fee:</em></h4></td>';
+                        echo'<td>   </td>'; 
+                        echo'<td>   </td>';
+                        echo'<td class="col-md-1 text-center">₱'.$row['school_uniform'].'</td>';
+                        echo'</tr>';
+
+                        echo'<tr>';
+                        echo'<td class="col-md-9"><em>P.E Uniform:</em></h4></td>';
+                        echo'<td>   </td>'; 
+                        echo'<td>   </td>';
+                        echo'<td class="col-md-1 text-center">₱'.$row['pe_uniform'].'</td>';
+                        echo'</tr>';
+                        
+                        echo'<tr>';
+                            echo'<td>   </td>';
+                            echo'<td>   </td>';
+                            echo'<td class="text-right"><h4><strong>Total: </strong></h4></td>';
+                            $total = $row['total_whole_year'] + $row['books'] + $row['school_uniform'] + $row['pe_uniform'];
+                            echo'<td class="text-center text-danger"><h4><strong>₱'.$total.'</strong></h4></td>';
+                        echo'</tr>';
+
+                        echo '</tbody>';
+                        echo '</table>';
+
+                        echo'<div style="text-align: center;">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Make a Payment</button>
+                        </div>';
+                        
         }
         // Free result set
         mysqli_free_result($result);
     } else{
         echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
     }
+}
 } else{
     echo "Oops! Something went wrong. Please try again later.";
 }
 // Close connection
 
-?>
-
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Make a Payment</button>
+?>                          
                             </div>
                         </div>
                     </div>
@@ -199,6 +264,10 @@ if($result = mysqli_query($link, $sql)){
 </div>
 
 <div id="additionalFields" class="mb-3" style="display: none;">
+
+    <div class="mb-3" style="text-align: center;">
+        <img id="uploadedImage" src="../images/gcash.png" alt="gcash qr">
+    </div>
     <!-- Additional fields for GCash payment method -->
     <div class="mb-3">
         <label for="gcash_number" class="form-label">GCash Number</label>
@@ -237,7 +306,7 @@ $sql = "SELECT *
 if($result = mysqli_query($link, $sql)){
     if(mysqli_num_rows($result) > 0){
         while ($row = mysqli_fetch_array($result)) {
-            $balance = $row['total_whole_year'];
+            $balance = $row['total_whole_year'] + $row['books'] + $row['school_uniform'] + $row['pe_uniform'];
             $installment_balance = $row['upon_enrollment'];
         }
         // Free result set
@@ -307,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     <?php
-    include 'footer.php';
+
     include 'script.php';
   ?>
 
