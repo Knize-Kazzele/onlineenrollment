@@ -18,6 +18,13 @@
   </li>
 
   <li class="nav-item">
+  <a class="nav-link collapsed" href="students.php">
+  <i class="bi bi-people-fill"></i>
+      <span>Students</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
   <a class="nav-link collapsed" href="schedule.php">
       <i class="bi bi-calendar2-week-fill"></i>
       <span>Schedule</span>
