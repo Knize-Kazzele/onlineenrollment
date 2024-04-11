@@ -37,11 +37,11 @@ if(!isset($registrar_id)){
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Enrollment</h1>
+        <h1>Students</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                <li class="breadcrumb-item active">Enrollment</li>
+                <li class="breadcrumb-item active">Students</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -65,7 +65,7 @@ if(!isset($registrar_id)){
                     require_once "config1.php";
 
                     // Attempt select query execution
-                    $sql = "SELECT * FROM student INNER JOIN users ON student.userId = users.id";
+                    $sql = "SELECT * FROM student INNER JOIN users ON student.userId = users.id WHERE student.isVerified = 2";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
@@ -74,7 +74,7 @@ if(!isset($registrar_id)){
                                         echo "<th>Name</th>";
                                         echo "<th>Date of Birth</th>";
                                         echo "<th>Email</th>";
-                                        echo "<th>Status</th>";
+                                        
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -84,30 +84,9 @@ if(!isset($registrar_id)){
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>" . $row['dob'] . "</td>";
                                         echo "<td>" . $row['email'] . "</td>";
-                                        echo "<td>" . ($row['isVerified'] == 1 ? 'Verified' : ($row['isVerified'] == 0 ? 'Not Verified' : 'Enrolled')) . "</td>";
+                                        
                                         echo "<td>";
-                                        if ($row['isVerified'] == 0) {
-                                        echo '<a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#verifyModal'.$row['student_id'].'" title="Verify Record" data-toggle="tooltip"><span class="bi bi-check-circle-fill"></span></a>';
-                                        // Verification Modal
-echo '
-<div class="modal fade" id="verifyModal'.$row['student_id'].'" tabindex="-1" aria-labelledby="verifyModalLabel'.$row['student_id'].'" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="verifyModalLabel'.$row['student_id'].'">Confirm Verification</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to verify this record?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <a href="verify.php?id='.$row['student_id'].'" class="btn btn-success">Verify</a>
-      </div>
-    </div>
-  </div>
-</div>';
-                        }
+                                        
                         echo '<a href="view_record.php?id='.$row['student_id'].'" class="btn btn-info" title="View Record"><span class="bi bi-eye-fill"></span></a>';
 
                                         
@@ -133,7 +112,10 @@ echo '
                                                 </div>
                                               </div>
                                             </div>';
+
+                                            echo '<a href="encode_student.php?id='.$row['student_id'].'" class="btn btn-primary" title="Add Schedule"><span class="bi bi-plus-square-fill"></span></a>';
                                         echo "</td>";
+                                        
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            

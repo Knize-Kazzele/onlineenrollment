@@ -55,8 +55,12 @@ if(!isset($accounting_id)){
                             <h5 class="card-title"></h5>
                             <?php
 // Check if the 'deleted' parameter is set and equals to 1
-if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
-    echo "<div class='alert alert-success'>Record deleted successfully.</div>";
+if(isset($_GET['reject']) && $_GET['reject'] == 1){
+    echo "<div class='alert alert-success'>Payment rejected successfully.</div>";
+}
+
+if(isset($_GET['verified']) && $_GET['verified'] == 1){
+    echo "<div class='alert alert-success'>Payment verified successfully.</div>";
 }
 ?>
                         </div>
@@ -91,40 +95,90 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                     } else {
                                         echo '';
                                     }
+                                    echo "</td>";
                                     echo "<td>" .'₱'.''. $row["payment_amount"] . "</td>";
                                     echo "<td>". $row["created_at"] . "</td>";
                                     echo "<td>";
                                         if ($row["status"] == 0) {
                                             echo '<span class="badge bg-warning text-dark">Not yet verified</span>';
-                                        } else {
+                                        } else if($row["status"] == 1){
                                             echo '<span class="badge bg-success text-dark">Verified</span>';
+                                        }else{
+                                            echo '<span class="badge bg-danger text-dark">Rejected</span>';
                                         }
                                     echo "</td>";
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['payment_id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
-                                            echo '<a href="edit_payment.php?id='. $row['payment_id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
-                                            echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['payment_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
-                                            
+                                        if ($row['status'] == 0 || $row['status'] === null) {
+                                        echo '<a href="#" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#verifyModal'.$row['user_id'].'" title="Verify Record" data-toggle="tooltip"><span class="bi bi-check-circle-fill"></span></a>';
+                                        // Verification Modal
+echo '
+<div class="modal fade" id="verifyModal'.$row['user_id'].'" tabindex="-1" aria-labelledby="verifyModalLabel'.$row['user_id'].'" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="verifyModalLabel'.$row['user_id'].'">Confirm Verification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to verify this record?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="verify.php?id='.$row['user_id'].'" class="btn btn-success">Verify</a>
+      </div>
+    </div>
+  </div>
+</div>';
+
+
+echo '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal' . $row['transaction_id'] . '" title="Delete Record"><span class="bi bi-x-circle-fill"></span></button>';
                                             // Delete Modal
                                             echo '
-                                            <div class="modal fade" id="deleteModal'.$row['payment_id'].'" tabindex="-1" aria-labelledby="deleteModalLabel'.$row['payment_id'].'" aria-hidden="true">
+                                            <div class="modal fade" id="deleteModal'.$row['transaction_id'].'" tabindex="-1" aria-labelledby="deleteModalLabel'.$row['transaction_id'].'" aria-hidden="true">
                                               <div class="modal-dialog">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel'.$row['payment_id'].'">Confirm Delete</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel'.$row['transaction_id'].'">Confirm Reject</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
-                                                    Are you sure you want to delete this record?
+                                                    Are you sure you want to reject this payment?
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <a href="delete.php?id='.$row['payment_id'].'" class="btn btn-danger">Delete</a>
+                                                    <a href="reject_installment.php?id='.$row['transaction_id'].'" class="btn btn-danger">Reject</a>
                                                   </div>
                                                 </div>
                                               </div>
                                             </div>';
+                                        }
+                                        echo '<button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#viewModal' . $row['transaction_id'] . '" title="View Record"><span class="bi bi-eye-fill"></span></button>';
+// View Modal
+echo '
+<div class="modal fade" id="viewModal' . $row['transaction_id'] . '" tabindex="-1" aria-labelledby="viewModalLabel' . $row['transaction_id'] . '" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewModalLabel' . $row['transaction_id'] . '">View Record</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Content to display in the modal body -->
+                <p>Reference No.: ' . $row['reference_number'] . '</p>
+                <p>Payment Method: ' . $row['payment_method'] . '</p>
+                <p>Payment Amount: ₱' . $row["payment_amount"] . '</p>
+                <p>Payment Date: ' . $row["created_at"] . '</p>
+                <!-- You can add more details here as needed -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>';
+                                        
                                         echo "</td>";
+                                        
                                     echo "</tr>";
                                 }
                                 echo "</tbody>";                            

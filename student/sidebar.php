@@ -25,7 +25,7 @@
   </li>
 
   <li class="nav-item">
-  <a class="nav-link collapsed" href="">
+  <a class="nav-link collapsed" href="cor.php">
       <i class="bi bi-file-earmark-text-fill"></i>
       <span>Certificate of Registration</span>
     </a>

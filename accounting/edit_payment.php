@@ -155,7 +155,7 @@ else{
     <!-- Submit Button -->
     <div class="text-center">
         <button type="submit" class="btn btn-primary" name="edit_payment">Update</button>
-        <a href="user.php" class="btn btn-secondary">Cancel</a>
+        <a href="payment.php" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
 

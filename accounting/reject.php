@@ -5,7 +5,7 @@ include_once 'config.php';
 // Check if the ID parameter is set and is a valid integer
 if(isset($_GET['id']) && is_numeric($_GET['id'])){
     // Prepare a delete statement
-    $sql = "DELETE FROM payments WHERE payment_id = :id";
+    $sql = "UPDATE transactions SET status = 2 WHERE transaction_id = :id";
 
     if($stmt = $conn->prepare($sql)){
         // Bind parameters
@@ -17,7 +17,7 @@ if(isset($_GET['id']) && is_numeric($_GET['id'])){
         // Attempt to execute the prepared statement
         if($stmt->execute()){
             // Records deleted successfully. Redirect to landing page
-            header("location: payment.php?deleted=1");
+            header("location: cash.php?reject=1");
             exit();
         } else{
             echo "Oops! Something went wrong. Please try again later.";

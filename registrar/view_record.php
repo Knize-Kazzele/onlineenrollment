@@ -190,11 +190,11 @@ if ($files) {
 }
 ?>
 </div>
-<?php if ($student['isVerified'] != 1): ?>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary" name="verify_student">Verify Student</button>
-        </div>
-    <?php endif; ?>
+<?php if ($student['isVerified'] == 0 || $student['isVerified'] === NULL): ?>
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary" name="verify_student">Verify Student</button>
+    </div>
+<?php endif; ?>
 </div>
 </form>
 <?php}?>

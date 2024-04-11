@@ -90,9 +90,11 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                         echo "<td>" . $row['tuition_june_to_march'] . "</td>";
                                         echo "<td>" . $row['total_whole_year'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="read.php?id='. $row['payment_id'] .'" class="r-2" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
-                                            echo '<a href="edit_payment.php?id='. $row['payment_id'] .'" class="m-2" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
-                                            echo '<a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['payment_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
+                                        echo '<button type="button" class="btn btn-primary r-2" title="View Record" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#viewModal'.$row['payment_id'].'"><span class="bi bi-eye-fill"></span></button>';
+
+                                        echo '<button type="button" class="btn btn-secondary m-2" title="Update Record" data-toggle="tooltip" onclick="location.href=\'edit_payment.php?id='. $row['payment_id'] .'\'"><span class="bi bi-pencil-fill"></span></button>';
+                                        echo '<button type="button" class="btn btn-danger" title="Delete Record" data-toggle="tooltip" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['payment_id'].'"><span class="bi bi-trash-fill"></span></button>';
+                                        
                                             
                                             // Delete Modal
                                             echo '
@@ -113,6 +115,28 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                                 </div>
                                               </div>
                                             </div>';
+
+                                            // View Modal
+echo '
+<div class="modal fade" id="viewModal'.$row['payment_id'].'" tabindex="-1" aria-labelledby="viewModalLabel'.$row['payment_id'].'" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewModalLabel'.$row['payment_id'].'">View Payment Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h6>Grade Level: '.$row['grade_level'].'</h6>
+        <p>Upon Enrollment: '.$row['upon_enrollment'].'</p>
+        <p>Tuition June to March: '.$row['tuition_june_to_march'].'</p>
+        <p>Total Tuition Fee w/o Books: '.$row['total_whole_year'].'</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>';
                                         echo "</td>";
                                     echo "</tr>";
                                 }
