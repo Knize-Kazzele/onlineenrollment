@@ -113,7 +113,6 @@ if(!isset($registrar_id)){
                                               </div>
                                             </div>';
 
-                                            echo '<a href="encode_student.php?id='.$row['student_id'].'" class="btn btn-primary" title="Add Schedule"><span class="bi bi-plus-square-fill"></span></a>';
                                         echo "</td>";
                                         
                                     echo "</tr>";

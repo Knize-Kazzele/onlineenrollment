@@ -112,15 +112,15 @@ echo '
 
                                         
                                             echo '  ';
-                                            echo '<a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
+                                            echo '<a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal'.$row['student_id'].'" title="Delete Record" data-toggle="tooltip"><span class="bi bi-trash-fill"></span></a>';
 
                                             // Delete Modal
                                             echo '
-                                            <div class="modal fade" id="deleteModal'.$row['id'].'" tabindex="-1" aria-labelledby="deleteModalLabel'.$row['id'].'" aria-hidden="true">
+                                            <div class="modal fade" id="deleteModal'.$row['student_id'].'" tabindex="-1" aria-labelledby="deleteModalLabel'.$row['student_id'].'" aria-hidden="true">
                                               <div class="modal-dialog">
                                                 <div class="modal-content">
                                                   <div class="modal-header">
-                                                    <h5 class="modal-title" id="deleteModalLabel'.$row['id'].'">Confirm Delete</h5>
+                                                    <h5 class="modal-title" id="deleteModalLabel'.$row['student_id'].'">Confirm Delete</h5>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                   </div>
                                                   <div class="modal-body">
@@ -128,7 +128,7 @@ echo '
                                                   </div>
                                                   <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <a href="delete.php?id='.$row['id'].'" class="btn btn-danger">Delete</a>
+                                                    <a href="delete_enrollment.php?id='.$row['student_id'].'" class="btn btn-danger">Delete</a>
                                                   </div>
                                                 </div>
                                               </div>

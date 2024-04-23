@@ -4,9 +4,9 @@ include 'config.php';
 
 session_start();
 
-$registrar_id = $_SESSION['registrar_id'];
+$teacher_id = $_SESSION['teacher_id'];
 
-if(!isset($registrar_id)){
+if(!isset($teacher_id)){
    header('location:login.php');
    exit; // Add exit to stop further execution
 }
@@ -60,7 +60,7 @@ if(!isset($registrar_id)){
                         }
                         ?>
 
-                        <a href="create_schedule.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add Schedule</a>
+                    
                     </div>
                     <?php
                     // Include config file
@@ -72,7 +72,8 @@ if(!isset($registrar_id)){
                     INNER JOIN sections on sections.section_id = schedules.section_id
                     INNER JOIN subjects ON subjects.subject_id = schedules.subject_id
                     INNER JOIN gradelevel ON gradelevel.gradelevel_id = schedules.grade_level
-                    INNER JOIN rooms ON rooms.room_id = schedules.room_id";
+                    INNER JOIN rooms ON rooms.room_id = schedules.room_id
+                    WHERE schedules.teacher_id = $teacher_id";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
