@@ -189,7 +189,27 @@ else {
 } else {
     // User is not registered yet, show the registration form
 ?>
-                                <form method="post" name="add_registration" onSubmit="return valid();" enctype="multipart/form-data">
+
+<!-- Grade Level selection -->
+
+<div class="row mb-3" id="grade_level_container"> 
+    <div class="col-md-6 offset-md-3 text-center">
+        <label for="grade_level" class="form-label">Grade Level</label>
+        <select class="form-select" id="grade_level" name="grade_level">
+            <option value="">Select Grade Level</option>
+            <?php
+            include "config1.php";
+            // Fetch grade levels from database
+            $sql = "SELECT * FROM gradelevel";
+            $result = mysqli_query($link, $sql);
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<option value='" . $row['gradelevel_id'] . "'>" . $row['gradelevel_name'] . "</option>";
+            }
+            ?>
+        </select>
+    </div>
+</div>
+                                <form method="post" name="add_registration" onSubmit="return valid();" enctype="multipart/form-data" id="registrationForm" style="display: none;">
                                 <div class="row mb-3">
                                 <div class="col-md-9" style="margin-top: 120px;">
     <label for="sname" class="form-label">Name</label>
@@ -197,7 +217,7 @@ else {
 </div>
 <div class="col-md-3 text-center">
     <img id="preview" src="../images/profile.jpg" alt="Profile Picture" class="mx-auto d-block" style="width: 200px; height: 200px; cursor: pointer;" onclick="triggerFileUpload()">
-    <input type="file" accept="image/*"  class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;">
+    <input type="file" accept="image/*"  class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;" required>
     <label for="image" class="form-label">Upload Image (2x2)</label>
 </div>
 
@@ -273,14 +293,7 @@ else {
     </div>
     <hr size=8 noshade>
     <div class="row mb-3">
-    <div class="col-md-6">
-        <label for="grade_level" class="form-label">Grade Level</label>
-        <select class="form-select" id="grade_level" name="grade_level">
-            <option value="1">Grade 1</option>
-            <option value="2">Grade 2</option>
-            <!-- Add more options for other grade levels -->
-        </select>
-    </div>
+    
     <div class="col-md-6" style="margin-top: 20px;">
     <label for="requirements" class="form-label">Requirements:</label>
     <ul>
@@ -304,9 +317,71 @@ else {
                     </div>
                 </div>
             </div>
+            <!-- Modal -->
+<div class="modal fade" id="enrollmentModal" tabindex="-1" aria-labelledby="enrollmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="enrollmentModalLabel">Enrollment Schedule</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        There is no enrollment schedule for today.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         </section>
 
     </main><!-- End #main -->
+    <script>
+    // Show the registration form only if the selected grade level has an enrollment schedule for today
+    document.getElementById('grade_level').addEventListener('change', function() {
+        var gradeLevelContainer = document.getElementById('grade_level_container');
+        var registrationForm = document.getElementById('registrationForm');
+        var selectedGradeLevel = this.value;
+
+        if (selectedGradeLevel !== '') {
+            // Send an AJAX request to check if the selected grade level has an enrollment schedule for today
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'check_enrollment.php');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.enrollmentExists) {
+                        // Enrollment schedule exists for today and the selected grade level
+                        // Show the registration form
+                        registrationForm.style.display = 'block';
+                        // Move the grade level container to the top of the form
+                        registrationForm.insertBefore(gradeLevelContainer, registrationForm.firstChild);
+                    } else {
+                        // No enrollment schedule exists for today and the selected grade level
+                        // Show the modal dialog
+                        var enrollmentModal = new bootstrap.Modal(document.getElementById('enrollmentModal'));
+                        enrollmentModal.show();
+                        // Hide the registration form
+                        registrationForm.style.display = 'none';
+                    }
+                } else {
+                    // Error handling
+                    alert('Error: Unable to check enrollment schedule. Please try again.');
+                }
+            };
+            xhr.send('grade_level=' + selectedGradeLevel);
+        } else {
+            // Hide the registration form if no grade level is selected
+            registrationForm.style.display = 'none';
+        }
+    });
+</script>
+
+
+
     <script>
     // Calculate age based on date of birth
     document.getElementById('dob').addEventListener('change', function() {

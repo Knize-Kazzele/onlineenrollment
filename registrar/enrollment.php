@@ -63,14 +63,18 @@ if(!isset($registrar_id)){
                     <?php
                     // Include config file
                     require_once "config1.php";
-
+                    
+                    $today_date = date("Y-m-d");
+                    
                     // Attempt select query execution
-                    $sql = "SELECT * FROM student INNER JOIN users ON student.userId = users.id";
+                    $sql = "SELECT * FROM student INNER JOIN users ON student.userId = users.id inner join gradelevel on student.grade_level = gradelevel.gradelevel_id inner join approvalschedule on student.grade_level = approvalschedule.gradelevel_id
+                            WHERE approvalschedule.start_date <= CURDATE() AND approvalschedule.end_date >= CURDATE()";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
                                 echo "<thead>";
                                     echo "<tr>";                                      
+                                        echo "<th>Grade Level</th>";
                                         echo "<th>Name</th>";
                                         echo "<th>Date of Birth</th>";
                                         echo "<th>Email</th>";
@@ -81,6 +85,7 @@ if(!isset($registrar_id)){
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
+                                    echo "<td>" . $row['gradelevel_name'] . "</td>";
                                         echo "<td>" . $row['name'] . "</td>";
                                         echo "<td>" . $row['dob'] . "</td>";
                                         echo "<td>" . $row['email'] . "</td>";

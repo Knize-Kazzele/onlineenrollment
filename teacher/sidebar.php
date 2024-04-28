@@ -27,7 +27,7 @@
   <li class="nav-item">
   <a class="nav-link collapsed" href="encodegrade.php">
       <i class="bi bi-mortarboard-fill"></i>
-      <span>Grade</span>
+      <span>Encode Grade</span>
     </a>
   </li>
 

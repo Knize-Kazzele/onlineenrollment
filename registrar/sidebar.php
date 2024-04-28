@@ -32,6 +32,13 @@
   </li>
 
   <li class="nav-item">
+  <a class="nav-link collapsed" href="verify_grade.php">
+  <i class="bi bi-people-fill"></i>
+      <span>Verify Grade</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
   <a class="nav-link collapsed" href="subject.php">
   <i class="bi bi-book-fill"></i>
       <span>Subject</span>
@@ -56,6 +63,13 @@
   <a class="nav-link collapsed" href="room.php">
   <i class="bi bi-door-closed-fill"></i>
       <span>Room</span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="enrollmentschedule.php">
+  <i class="bi bi-calendar-range-fill"></i>
+      <span>Schedule of Enrollment</span>
     </a>
   </li>
 

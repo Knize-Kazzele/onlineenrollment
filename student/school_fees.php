@@ -137,7 +137,7 @@ $totalPaid = $totalPaidRow['total_paid'];
 $sql = "SELECT *
         FROM student
         INNER JOIN payments on student.grade_level = payments.grade_level 
-        WHERE student.userId = $student_id";
+        WHERE student.userId = $student_id and isVerified=1";
 if($result = mysqli_query($link, $sql)){
     // Add your additional query here    
     if(mysqli_num_rows($result) > 0){

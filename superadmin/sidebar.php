@@ -17,6 +17,13 @@
     </a>
   </li>
 
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="approvalschedule.php">
+      <i class="bi bi-calendar-fill"></i>
+      <span>Schedule of Approval</span>
+    </a>
+  </li>
+
  
 
 </ul>
