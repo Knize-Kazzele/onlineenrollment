@@ -66,10 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 exit();
             } else {
-                $error_message = "Invalid username or password";
+                $error_message = "Invalid Learner Reference Number (LRN) or password";
             }
         } else {
-            $error_message = "Invalid username or password";
+            $error_message = "Invalid Learner Reference Number (LRN) or password";
         }
     } catch(PDOException $e) {
         echo "Error: " . $e->getMessage();
@@ -140,10 +140,10 @@ $conn = null; // Close connection
         <div class="alert alert-danger"><?php echo $error_message; ?></div>
     <?php } ?>
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
+                      <label for="yourUsername" class="form-label">Learner Reference Number (LRN)</label>
                       <div class="input-group has-validation">
                         <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please enter your username.</div>
+                        <div class="invalid-feedback">Please enter your Learner Reference Number.</div>
                       </div>
                     </div>
 

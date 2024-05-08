@@ -159,8 +159,8 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
+                <label for="username">Learner Reference Number (LRN)</label>
+                <input type="text" class="form-control" id="username" name="username" oninput="validateLRN(event)" required>
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
@@ -201,6 +201,21 @@
 </form>
 
 <script>
+function validateLRN(event) {
+    const input = event.target;
+    let inputValue = input.value.trim();
+    
+    // Remove any non-digit characters
+    inputValue = inputValue.replace(/\D/g, '');
+
+    // Check if input is a number and has exactly 12 digits
+    const isValid = /^\d{12}$/.test(inputValue);
+
+    if (!isValid) {
+        // Clear the input field if it does not meet the validation criteria
+        input.value = inputValue.substring(0, 12);
+    }
+}
 // Get the link to view requirements
 var link = document.getElementById("viewRequirements");
 
