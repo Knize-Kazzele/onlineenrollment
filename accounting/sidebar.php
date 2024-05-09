@@ -31,12 +31,6 @@
     </a>
   </li>
 
-  <li class="nav-item">
-  <a class="nav-link collapsed" href="">
-      <i class="bi bi-file-earmark-text-fill"></i>
-      <span>Assessment</span>
-    </a>
-  </li>
 
 
  

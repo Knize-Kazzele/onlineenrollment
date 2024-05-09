@@ -246,6 +246,27 @@ if(!isset($student_id)){
 
     </div>
   </div>
+  <div class="row">
+    <div class="col-xl-12 text-center">
+    <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Monday</th>
+      <th>Tuesday</th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th>Friday</th>
+      <th>Saturday</th>
+      <th>Sunday</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Your table rows will go here -->
+  </tbody>
+</table>
+
+    </div>
+  </div>
 </section>
 
 </main><!-- End #main -->

@@ -83,6 +83,7 @@ if(!isset($registrar_id)){
                                         echo "<th>Room</th>";
                                         echo "<th>Subject Name</th>";
                                         echo "<th>Teacher</th>";
+                                        echo "<th>Day</th>";
                                         echo "<th>Start Time</th>";
                                         echo "<th>End Time</th>";
                                         echo "<th>Action</th>";
@@ -96,6 +97,7 @@ if(!isset($registrar_id)){
                                         echo "<td>" . $row['room_name'] . "</td>";
                                         echo "<td>" . $row['subject_name'] . "</td>";
                                         echo "<td>" . $row['teacher_name'] . "</td>";
+                                        echo "<td>" . $row['day'] . "</td>";
                                         echo "<td>" . $row['start_time'] . "</td>";
                                         echo "<td>" . $row['end_time'] . "</td>";
                                         echo "<td>";

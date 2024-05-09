@@ -20,12 +20,13 @@ else{
     $room_id = $_POST['room'];
     $start_time = $_POST['start_time'];
     $end_time = $_POST['end_time'];
+    $day = $_POST['day'];
 
     // Validate inputs here...
 
     // Prepare and execute SQL query
-    $sql = "INSERT INTO schedules (grade_level, section_id, subject_id, teacher_id, room_id, start_time, end_time) 
-            VALUES (:grade_level, :section_id, :subject_id, :teacher_id, :room_id, :start_time, :end_time)";
+    $sql = "INSERT INTO schedules (grade_level, section_id, subject_id, teacher_id, room_id, start_time, end_time, day) 
+            VALUES (:grade_level, :section_id, :subject_id, :teacher_id, :room_id, :start_time, :end_time, :day)";
     $query = $conn->prepare($sql);
     $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
     $query->bindParam(':section_id', $section_id, PDO::PARAM_INT);
@@ -34,6 +35,7 @@ else{
     $query->bindParam(':room_id', $room_id, PDO::PARAM_INT);
     $query->bindParam(':start_time', $start_time, PDO::PARAM_STR);
     $query->bindParam(':end_time', $end_time, PDO::PARAM_STR);
+    $query->bindParam(':day', $day, PDO::PARAM_STR);
 
     if ($query->execute()) {
         $msg = "Schedule Added Successfully";
@@ -149,6 +151,20 @@ else{
                   ?>
                 </select>
               </div>
+
+              <div class="col-md-12">
+                  <select id="day" class="form-select" name="day" required>
+                      <option selected>Select Day</option>
+                      <option value="Monday">Monday</option>
+                      <option value="Tuesday">Tuesday</option>
+                      <option value="Wednesday">Wednesday</option>
+                      <option value="Thursday">Thursday</option>
+                      <option value="Friday">Friday</option>
+                      <option value="Saturday">Saturday</option>
+                      <option value="Sunday">Sunday</option>
+                  </select>
+              </div>
+
               <div class="col-md-12">
                 <label for="start_time" class="form-label">Start Time</label>
                 <input type="time" class="form-control" id="start_time" name="start_time" required>

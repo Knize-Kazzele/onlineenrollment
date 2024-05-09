@@ -85,7 +85,7 @@ if(!isset($student_id)){
               echo "<ul>";
               foreach ($rows as $row) {
                   if (isset($row['cor_content'])) {
-                      echo "<li><a href='download_cor.php?id={$row['id']}'>Download Certificate of Registration</a></li>";
+                      echo "<li><a href='cor_template.php?id={$row['id']}'>Download Certificate of Registration</a></li>";
                   }
               }
               echo "</ul>";
