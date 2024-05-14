@@ -60,8 +60,23 @@ if ($result->num_rows > 0) {
     }
 } else {
     // No student found with the provided ID
-    $student_name = "N/A";
-    $grade = "N/A";
+    $total = "";
+        $type="";
+        $studentId="";
+        $student_name = "";
+        $student_age = "";
+        $student_address = "";
+        $student_guardian = "";
+        $grade ="";
+        $date = "";
+        $partialP = "";
+        $uponP = "";
+        $paymentA = "";
+        $tuition = "";
+        $formatted_date = "";
+
+        $dateString = "";
+        $formattedDate = "";
 }
 
 // Prepare SQL statement to fetch data from encodedstudentsubjects table

@@ -19,7 +19,7 @@ if(!isset($parent_id)){
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Dashboard - Parent</title>
+  <title>Dashboard - Student</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -85,7 +85,7 @@ if(!isset($parent_id)){
               echo "<ul>";
               foreach ($rows as $row) {
                   if (isset($row['cor_content'])) {
-                      echo "<li><a href='download_cor.php?id={$row['id']}'>Download Certificate of Registration</a></li>";
+                      echo "<li><a href='cor_template.php?id={$row['id']}'>Download Certificate of Registration</a></li>";
                   }
               }
               echo "</ul>";
