@@ -7,6 +7,7 @@ if (!isset($parent_id)) {
     header('location: login.php');
     exit; // Add exit to stop further execution
 }
+
 function generateReferenceNumber() {
     // Generate a random number
     $random_number = mt_rand(1000000000, 9999999999);
@@ -25,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $gcash_number = null;
     $reference_number = null;
     $payment_type = $_POST['payment_type'];
+    $installment_type = $_POST['installment_type'];
 
     // Set GCash number or Reference number based on the selected payment method
     if ($payment_method === 'GCash') {
@@ -52,9 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare and execute the SQL statement to insert data into the database
-    $sql = "INSERT INTO transactions (user_id, payment_amount, payment_method, gcash_number, reference_number, screenshot_path, payment_type) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO transactions (user_id, payment_amount, payment_method, gcash_number, reference_number, screenshot_path, payment_type, installment_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     if ($stmt = $link->prepare($sql)) {
-        $stmt->bind_param("idsssss", $user_id, $payment_amount, $payment_method, $gcash_number, $reference_number, $screenshot_path, $payment_type);
+        $stmt->bind_param("idssssss", $user_id, $payment_amount, $payment_method, $gcash_number, $reference_number, $screenshot_path, $payment_type, $installment_type);
         if ($stmt->execute()) {
             // Payment successfully recorded
             echo "Payment successfully recorded.";

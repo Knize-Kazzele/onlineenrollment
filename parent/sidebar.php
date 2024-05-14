@@ -30,6 +30,13 @@
       <span>Certificate of Registration</span>
     </a>
   </li> 
+
+  <li class="nav-item">
+  <a class="nav-link collapsed" href="grade.php">
+      <i class="bi bi-table"></i>
+      <span>View Grade</span>
+    </a>
+  </li> 
 </ul>
 
 </aside><!-- End Sidebar-->

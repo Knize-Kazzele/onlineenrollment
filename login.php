@@ -132,7 +132,7 @@ $conn = null; // Close connection
 
                   <div class="pt-4 pb-2">
                     <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
-                    <p class="text-center small">Enter your username & password to login</p>
+                    <p class="text-center small">Enter your LRN/username & password to login</p>
                   </div>
 
                   <form class="row g-3 needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" novalidate>
@@ -140,7 +140,7 @@ $conn = null; // Close connection
         <div class="alert alert-danger"><?php echo $error_message; ?></div>
     <?php } ?>
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Learner Reference Number (LRN)</label>
+                      <label for="yourUsername" class="form-label">Learner Reference Number (LRN) or Username</label>
                       <div class="input-group has-validation">
                         <input type="text" name="username" class="form-control" id="yourUsername" required>
                         <div class="invalid-feedback">Please enter your Learner Reference Number.</div>

@@ -246,6 +246,243 @@ if(!isset($parent_id)){
 
     </div>
   </div>
+  <div class="row justify-content-center">
+    <div class="col-xl-2 text-center">
+    <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Monday</th>
+    </tr>
+  </thead>
+  <tbody>
+            <?php
+            // Connect to your database (replace with actual database credentials)
+            $conn = mysqli_connect("localhost", "root", "", "enrollment");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // SQL query to fetch schedule for Monday
+            $sql_monday = "SELECT subjects.subject_name FROM encodedstudentsubjects
+            INNER JOIN student ON encodedstudentsubjects.student_id = student.student_id
+            INNER JOIN schedules ON encodedstudentsubjects.schedule_id = schedules.id
+            INNER JOIN subjects ON schedules.subject_id = subjects.subject_id
+            WHERE student.student_id = $parent_id AND schedules.day = 'Monday'";
+            $result_monday = mysqli_query($conn, $sql_monday);
+
+            if (mysqli_num_rows($result_monday) > 0) {
+                // Output data of each row
+                while ($row_monday = mysqli_fetch_assoc($result_monday)) {
+                    echo '<tr>';
+                    echo '<td>' . $row_monday["subject_name"] . '</td>';
+                    // Add similar code for other days
+                    echo '</tr>';
+                }
+            } else {
+                // No schedule for Monday
+                echo '<tr><td colspan="7">No schedule for Monday</td></tr>';
+            }
+
+            mysqli_close($conn);
+            ?>
+
+
+        </tbody>
+</table>
+
+    </div>
+    <div class="col-xl-2 text-center">
+    <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Tuesday</th>
+    </tr>
+  </thead>
+  <tbody>
+            <?php
+            // Connect to your database (replace with actual database credentials)
+            $conn = mysqli_connect("localhost", "root", "", "enrollment");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // SQL query to fetch schedule for Monday
+            $sql_tuesday = "SELECT subjects.subject_name FROM encodedstudentsubjects
+            INNER JOIN student ON encodedstudentsubjects.student_id = student.student_id
+            INNER JOIN schedules ON encodedstudentsubjects.schedule_id = schedules.id
+            INNER JOIN subjects ON schedules.subject_id = subjects.subject_id
+            WHERE student.student_id = $parent_id AND schedules.day = 'Tuesday'";
+            $result_tuesday = mysqli_query($conn, $sql_tuesday);
+
+            if (mysqli_num_rows($result_tuesday) > 0) {
+                // Output data of each row
+                while ($row_monday = mysqli_fetch_assoc($result_tuesday)) {
+                    echo '<tr>';
+                    echo '<td>' . $row_monday["subject_name"] . '</td>';
+                    // Add similar code for other days
+                    echo '</tr>';
+                }
+            } else {
+                // No schedule for Monday
+                echo '<tr><td colspan="7">No schedule for Tuesday</td></tr>';
+            }
+
+            mysqli_close($conn);
+            ?>
+
+
+        </tbody>
+</table>
+
+    </div>
+  
+    <div class="col-xl-2 text-center">
+    <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Wednesday</th>
+    </tr>
+  </thead>
+  <tbody>
+            <?php
+            // Connect to your database (replace with actual database credentials)
+            $conn = mysqli_connect("localhost", "root", "", "enrollment");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // SQL query to fetch schedule for Monday
+            $sql_wednesday = "SELECT subjects.subject_name FROM encodedstudentsubjects
+            INNER JOIN student ON encodedstudentsubjects.student_id = student.student_id
+            INNER JOIN schedules ON encodedstudentsubjects.schedule_id = schedules.id
+            INNER JOIN subjects ON schedules.subject_id = subjects.subject_id
+            WHERE student.student_id = $parent_id AND schedules.day = 'Wednesday'";
+            $result_wednesday = mysqli_query($conn, $sql_wednesday);
+
+            if (mysqli_num_rows($result_wednesday) > 0) {
+                // Output data of each row
+                while ($row_monday = mysqli_fetch_assoc($result_wednesday)) {
+                    echo '<tr>';
+                    echo '<td>' . $row_monday["subject_name"] . '</td>';
+                    // Add similar code for other days
+                    echo '</tr>';
+                }
+            } else {
+                // No schedule for Monday
+                echo '<tr><td colspan="7">No schedule for Wednesday</td></tr>';
+            }
+
+            mysqli_close($conn);
+            ?>
+
+
+        </tbody>
+</table>
+
+    </div>
+  
+    
+    <div class="col-xl-2 text-center">
+    <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Thursday</th>
+    </tr>
+  </thead>
+  <tbody>
+            <?php
+            // Connect to your database (replace with actual database credentials)
+            $conn = mysqli_connect("localhost", "root", "", "enrollment");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // SQL query to fetch schedule for Monday
+            $sql_thursday = "SELECT subjects.subject_name FROM encodedstudentsubjects
+            INNER JOIN student ON encodedstudentsubjects.student_id = student.student_id
+            INNER JOIN schedules ON encodedstudentsubjects.schedule_id = schedules.id
+            INNER JOIN subjects ON schedules.subject_id = subjects.subject_id
+            WHERE student.student_id = $parent_id AND schedules.day = 'Thursday'";
+            $result_thursday = mysqli_query($conn, $sql_thursday);
+
+            if (mysqli_num_rows($result_thursday) > 0) {
+                // Output data of each row
+                while ($row_monday = mysqli_fetch_assoc($result_thursday)) {
+                    echo '<tr>';
+                    echo '<td>' . $row_monday["subject_name"] . '</td>';
+                    // Add similar code for other days
+                    echo '</tr>';
+                }
+            } else {
+                // No schedule for Monday
+                echo '<tr><td colspan="7">No schedule for Thursday</td></tr>';
+            }
+
+            mysqli_close($conn);
+            ?>
+
+
+        </tbody>
+</table>
+
+    </div>
+
+    <div class="col-xl-2 text-center">
+    <table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Friday</th>
+    </tr>
+  </thead>
+  <tbody>
+            <?php
+            // Connect to your database (replace with actual database credentials)
+            $conn = mysqli_connect("localhost", "root", "", "enrollment");
+
+            // Check connection
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            // SQL query to fetch schedule for Monday
+            $sql_friday = "SELECT subjects.subject_name FROM encodedstudentsubjects
+            INNER JOIN student ON encodedstudentsubjects.student_id = student.student_id
+            INNER JOIN schedules ON encodedstudentsubjects.schedule_id = schedules.id
+            INNER JOIN subjects ON schedules.subject_id = subjects.subject_id
+            WHERE student.student_id = $parent_id AND schedules.day = 'Friday'";
+            $result_friday = mysqli_query($conn, $sql_friday);
+
+            if (mysqli_num_rows($result_friday) > 0) {
+                // Output data of each row
+                while ($row_friday = mysqli_fetch_assoc($result_friday)) {
+                    echo '<tr>';
+                    echo '<td>' . $row_friday["subject_name"] . '</td>';
+                    // Add similar code for other days
+                    echo '</tr>';
+                }
+            } else {
+                // No schedule for Monday
+                echo '<tr><td colspan="7">No schedule for Friday</td></tr>';
+            }
+
+            mysqli_close($conn);
+            ?>
+
+
+        </tbody>
+</table>
+
+    </div>
+
+  </div>
 </section>
 
 </main><!-- End #main -->

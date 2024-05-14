@@ -68,7 +68,7 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                     require_once "config1.php";
                     
                     // Attempt select query execution
-                    $sql = "SELECT * FROM payments";
+                    $sql = "SELECT * FROM payments inner join gradelevel on payments.grade_level = gradelevel.gradelevel_id";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
@@ -76,8 +76,8 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                     echo "<tr>";
                                         echo "<th>Grade Level</th>";
                                         echo "<th>Upon Enrollment</th>";
-                                        echo "<th>Tuition June to March</th>";
-                                        echo "<th>Total Tuition Fee w/o Books</th>";
+                                        echo "<th>Partial</th>";
+                                        echo "<th>Total Tuition Fee</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -85,9 +85,9 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
                                        
-                                        echo "<td>" .$row['grade_level']."</td>";
+                                        echo "<td>" .$row['gradelevel_name']."</td>";
                                         echo "<td>" . $row['upon_enrollment'] . "</td>";
-                                        echo "<td>" . $row['tuition_june_to_march'] . "</td>";
+                                        echo "<td>" . $row['partial_upon'] . "</td>";
                                         echo "<td>" . $row['total_whole_year'] . "</td>";
                                         echo "<td>";
                                         echo '<button type="button" class="btn btn-primary r-2" title="View Record" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#viewModal'.$row['payment_id'].'"><span class="bi bi-eye-fill"></span></button>';
@@ -126,9 +126,9 @@ echo '
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h6>Grade Level: '.$row['grade_level'].'</h6>
+        <h6>Grade Level: '.$row['gradelevel_name'].'</h6>
         <p>Upon Enrollment: '.$row['upon_enrollment'].'</p>
-        <p>Tuition June to March: '.$row['tuition_june_to_march'].'</p>
+        <p>Partial Upon: '.$row['partial_upon'].'</p>
         <p>Total Tuition Fee w/o Books: '.$row['total_whole_year'].'</p>
       </div>
       <div class="modal-footer">

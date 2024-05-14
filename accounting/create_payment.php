@@ -18,18 +18,26 @@ if(!isset($accounting_id)) {
         $pe_uniform = $_POST['pe_uniform'];
         $books = $_POST['books'];
         $school_uniform = $_POST['school_uniform'];
+
+        // Divided values
+        $upon_enrollment_divided = $_POST['upon_enrollment_divided'];
+        $partial_upon_divided = $_POST['partial_upon_divided'];
         
-        $sql = "INSERT INTO payments (grade_level, upon_enrollment, tuition_june_to_march, partial_upon, total_whole_year, pe_uniform, books, school_uniform) 
-                VALUES (:grade_level, :upon_enrollment, :tuition_june_to_march, :partial_upon, :total_whole_year, :pe_uniform, :books, :school_uniform)";
-        $query = $conn->prepare($sql);
-        $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
-        $query->bindParam(':upon_enrollment', $upon_enrollment, PDO::PARAM_STR);
-        $query->bindParam(':tuition_june_to_march', $tuition_june_to_march, PDO::PARAM_STR);
-        $query->bindParam(':partial_upon', $partial_upon, PDO::PARAM_STR);
-        $query->bindParam(':total_whole_year', $total_whole_year, PDO::PARAM_STR);
-        $query->bindParam(':pe_uniform', $pe_uniform, PDO::PARAM_STR);
-        $query->bindParam(':books', $books, PDO::PARAM_STR);
-        $query->bindParam(':school_uniform', $school_uniform, PDO::PARAM_STR);
+        $sql = "INSERT INTO payments (grade_level, upon_enrollment, tuition_june_to_march, partial_upon, total_whole_year, pe_uniform, books, school_uniform,
+                                  upon_enrollment_divided, partial_upon_divided) 
+            VALUES (:grade_level, :upon_enrollment, :tuition_june_to_march, :partial_upon, :total_whole_year, :pe_uniform, :books, :school_uniform,
+                    :upon_enrollment_divided, :partial_upon_divided)";
+            $query = $conn->prepare($sql);
+            $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
+            $query->bindParam(':upon_enrollment', $upon_enrollment, PDO::PARAM_STR);
+            $query->bindParam(':tuition_june_to_march', $tuition_june_to_march, PDO::PARAM_STR);
+            $query->bindParam(':partial_upon', $partial_upon, PDO::PARAM_STR);
+            $query->bindParam(':total_whole_year', $total_whole_year, PDO::PARAM_STR);
+            $query->bindParam(':pe_uniform', $pe_uniform, PDO::PARAM_STR);
+            $query->bindParam(':books', $books, PDO::PARAM_STR);
+            $query->bindParam(':school_uniform', $school_uniform, PDO::PARAM_STR);
+            $query->bindParam(':upon_enrollment_divided', $upon_enrollment_divided, PDO::PARAM_STR);
+            $query->bindParam(':partial_upon_divided', $partial_upon_divided, PDO::PARAM_STR);
         
         if($query->execute()) {
             $msg = "Payment Added Successfully";
@@ -80,11 +88,18 @@ if(!isset($accounting_id)) {
                                 <div class="row mb-3">
     <label for="grade_level" class="col-sm-2 col-form-label">Grade Level</label>
     <div class="col-md-4">
-        <select class="form-select" id="grade_level" name="grade_level">
-            <option value="1">Grade 1</option>
-            <option value="2">Grade 2</option>
-            <!-- Add more options for other grade levels -->
-        </select>
+        <select class="form-select" id="grade_level" name="grade_level" required>
+                            <option value="">Select Grade Level</option>
+                            <?php
+                            include "config1.php";
+                            // Fetch grade levels from database
+                            $sql = "SELECT * FROM gradelevel";
+                            $result = mysqli_query($link, $sql);
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<option value='" . $row['gradelevel_id'] . "'>" . $row['gradelevel_name'] . "</option>";
+                            }
+                            ?>
+                        </select>
     </div>
     <label for="upon_enrollment" class="col-sm-2 col-form-label">Upon Enrollment</label>
     <div class="col-md-4">
@@ -99,30 +114,32 @@ if(!isset($accounting_id)) {
 </ul>  
     </div>
 </div>
-
-                                <div class="row mb-3">
-    <label for="tuition_june_to_march" class="col-sm-2 col-form-label">Tuition June to March</label>
+<div class="row mb-3">
+    <label for="total_whole_year" class="col-sm-2 col-form-label">Total Tuition Fee</label>
     <div class="col-md-4">
-        <input type="number" class="form-control" id="tuition_june_to_march" name="tuition_june_to_march">
+        <input type="number" class="form-control" id="total_whole_year" name="total_whole_year">
     </div>
+    <!-- <label for="pe_uniform" class="col-sm-2 col-form-label">P.E Uniform</label>
+    <div class="col-md-4">
+        <input type="number" class="form-control" id="pe_uniform" name="pe_uniform">
+    </div> -->
+
     <label for="partial_upon" class="col-sm-2 col-form-label">Partial Upon</label>
     <div class="col-md-4">
         <input type="number" class="form-control" id="partial_upon" name="partial_upon">
     </div>
+    
 </div>
 
-<div class="row mb-3">
-    <label for="total_whole_year" class="col-sm-2 col-form-label">Total Whole Year w/o Books</label>
+                                <div class="row mb-3">
+    <!-- <label for="tuition_june_to_march" class="col-sm-2 col-form-label">Tuition August to May</label>
     <div class="col-md-4">
-        <input type="number" class="form-control" id="total_whole_year" name="total_whole_year">
-    </div>
-    <label for="pe_uniform" class="col-sm-2 col-form-label">P.E Uniform</label>
-    <div class="col-md-4">
-        <input type="number" class="form-control" id="pe_uniform" name="pe_uniform">
-    </div>
+        <input type="number" class="form-control" id="tuition_june_to_march" name="tuition_june_to_march">
+    </div> -->
 </div>
 
-<div class="row mb-3">
+
+<!-- <div class="row mb-3">
     <label for="books" class="col-sm-2 col-form-label">Books</label>
     <div class="col-md-4">
         <input type="number" class="form-control" id="books" name="books">
@@ -130,6 +147,17 @@ if(!isset($accounting_id)) {
     <label for="school_uniform" class="col-sm-2 col-form-label">School Uniform</label>
     <div class="col-md-4">
         <input type="number" class="form-control" id="school_uniform" name="school_uniform">
+    </div>
+</div> -->
+<div class="row mb-3">
+<label for="upon_enrollment_divided" class="col-sm-2 col-form-label">Upon Enrollment (August - May)</label>
+    <div class="col-md-4">
+        <input type="number" class="form-control" id="upon_enrollment_divided" name="upon_enrollment_divided" readonly>
+    </div>
+
+    <label for="partial_upon_divided" class="col-sm-2 col-form-label">Partial Upon (August - May)</label>
+    <div class="col-md-4">
+        <input type="number" class="form-control" id="partial_upon_divided" name="partial_upon_divided" readonly>
     </div>
 </div>
 <div class="text-center">
@@ -143,10 +171,40 @@ if(!isset($accounting_id)) {
 </main><!-- End #main -->
 
 
+
   <?php
     include 'footer.php';
     include 'script.php';
   ?>
+
+<script>
+document.getElementById('total_whole_year').addEventListener('input', function() {
+    var total = parseFloat(document.getElementById('total_whole_year').value);
+    if (!isNaN(total)) {
+        var partialUpon = Math.round(total * 0.3003); 
+        document.getElementById('partial_upon').value = partialUpon;
+
+        var partialP = total -partialUpon;
+        var partialUponDivided = Math.round(partialP / 10);
+        document.getElementById('partial_upon_divided').value = partialUponDivided;
+    }
+});
+</script>
+
+<script>
+document.getElementById('total_whole_year').addEventListener('input', function() {
+    var total = parseFloat(document.getElementById('total_whole_year').value);
+    if (!isNaN(total)) {
+        var uponEnrollment = Math.round(total * 0.5345); // Calculate 46.5% of total
+        document.getElementById('upon_enrollment').value = uponEnrollment;
+        
+        var uponP = total -uponEnrollment;
+        var uponEnrollmentDivided = Math.round(uponP / 10);
+        document.getElementById('upon_enrollment_divided').value = uponEnrollmentDivided;
+    }
+});
+</script>
+
 
 </body>
 

@@ -12,6 +12,23 @@ if(!isset($student_id)){
 }
 
 ?>
+
+<?php
+
+include 'config1.php';
+// Check if there are any installment payments made by the user
+$sql_installment = "SELECT COUNT(*) AS installment_count FROM transactions WHERE user_id = $student_id AND payment_type = 'installment'";
+$result_installment = mysqli_query($link, $sql_installment);
+$row_installment = mysqli_fetch_assoc($result_installment);
+$installment_count = $row_installment['installment_count'];
+
+// If there are installment payments, disable the installment option
+if ($installment_count > 0) {
+    echo '<script>document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("payment_type").getElementsByTagName("option")[1].disabled = true;
+    });</script>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -150,7 +167,7 @@ if($result = mysqli_query($link, $sql)){
                         echo'<td class="col-md-1 text-center">₱'.$row['total_whole_year'].'</td>';
                         echo'</tr>';
                         
-                        echo'<tr>';
+                        /* echo'<tr>';
                         echo'<td class="col-md-9"><em>Book Fee:</em></h4></td>';
                         echo'<td>   </td>'; 
                         echo'<td>   </td>';
@@ -169,7 +186,7 @@ if($result = mysqli_query($link, $sql)){
                         echo'<td>   </td>'; 
                         echo'<td>   </td>';
                         echo'<td class="col-md-1 text-center">₱'.$row['pe_uniform'].'</td>';
-                        echo'</tr>';
+                        echo'</tr>'; */
                         
                         echo'<tr>';
                             echo'<td>   </td>';
@@ -177,6 +194,7 @@ if($result = mysqli_query($link, $sql)){
                             echo'<td class="text-right"><h4><strong>Balance: </strong></h4></td>';
                             $total = $row['total_whole_year'] + $row['books'] + $row['school_uniform'] + $row['pe_uniform'];
                             $remainingBalance = $total - $totalPaid;
+                            
                             echo'<td class="text-center text-danger"><h4><strong>₱'.$remainingBalance.'</strong></h4></td>';
                         echo'</tr>';
 
@@ -186,6 +204,7 @@ if($result = mysqli_query($link, $sql)){
                         echo'<div style="text-align: center;">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Make a Payment</button>
                         </div>';
+                        
                         }
                         
         }
@@ -242,6 +261,18 @@ if ($pending_count > 0) {
         <option value="installment">Installment</option>
     </select>
 </div>
+
+
+<div id="installmentFields" style="display: none;">
+            <div class="mb-3">
+                <label for="installment_type" class="form-label">Installment Type</label>
+                <select class="form-select" id="installment_type" name="installment_type">
+                    <option value="upon_enrollment">Upon Enrollment</option>
+                    <option value="partial">Partial</option>
+                </select>
+            </div>
+        </div>
+
     <div class="mb-3">
         <label for="payment_amount" class="form-label">Payment Amount</label>
         <input type="text" class="form-control" id="payment_amount" name="payment_amount" required>
@@ -302,6 +333,11 @@ if ($pending_count > 0) {
 
 require_once "config1.php";
 
+$sql_installment_count = "SELECT COUNT(*) AS installment_count FROM transactions WHERE user_id = $student_id AND payment_type = 'installment' AND status = 1";
+$result_installment_count = mysqli_query($link, $sql_installment_count);
+$row_installment_count = mysqli_fetch_assoc($result_installment_count);
+$installment_count = $row_installment_count['installment_count'];
+
 // Get the total amount paid by the user
 $sql = "SELECT SUM(payment_amount) AS total_paid FROM transactions WHERE user_id = $student_id and status = 1";
 $totalPaidResult = mysqli_query($link, $sql);
@@ -319,6 +355,8 @@ if($result = mysqli_query($link, $sql)){
             $balance = $row['total_whole_year'] + $row['books'] + $row['school_uniform'] + $row['pe_uniform'];
             $remainingBalance = $balance - $totalPaid;
             $installment_balance = $row['upon_enrollment'];
+            $partialPayment = $row['partial_upon'];
+
         }
         // Free result set
         mysqli_free_result($result);
@@ -337,11 +375,14 @@ document.addEventListener("DOMContentLoaded", function() {
     var paymentTypeSelect = document.getElementById("payment_type");
     var paymentAmountInput = document.getElementById("payment_amount");
     var balance = <?php echo json_encode($remainingBalance); ?>; 
+    var partialUpon = <?php echo json_encode($partialPayment); ?>; 
     var installment_balance = <?php echo json_encode($installment_balance); ?>; // Assigning the balance to JavaScript variable
 
     var cashRadio = document.getElementById("payment_method_cash");
     var gcashRadio = document.getElementById("payment_method_gcash");
     var additionalFieldsDiv = document.getElementById("additionalFields");
+    var installmentFieldsDiv = document.getElementById("installmentFields");
+    var installmentType = document.getElementById("installment_type");
 
     // Set initial state based on default selection
     if (cashRadio.checked) {
@@ -362,15 +403,32 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to update payment amount based on payment type
     function updatePaymentAmount() {
         var selectedPaymentType = paymentTypeSelect.value;
+        var selectedInstallmentType = installmentType.value;
         if (selectedPaymentType === 'cash') {
             // Set payment amount to the current balance
-            paymentAmountInput.value = balance;
+            var installmentPaid = <?php echo json_encode($installment_count); ?>;
+            if(installmentPaid > 0){
+                // Divide the remaining balance by 10 if there are paid installments
+                paymentAmountInput.value = balance / 10;
+            } else {
+                paymentAmountInput.value = balance;
+            }
         } else if(selectedPaymentType === 'installment') {
-            // Allow user to input payment amount manually
-            paymentAmountInput.value = installment_balance;
-        }
-        else{
-            paymentAmountInput.value='';
+            // Check if there are any paid transactions with payment type "installment"
+            var installmentPaid = <?php echo json_encode($installment_count); ?>;
+            if(installmentPaid > 0){
+                // Divide the remaining balance by 10 if there are paid installments
+                paymentAmountInput.value = balance / 10;
+            } else {
+                // Otherwise, set payment amount as usual
+                if(selectedInstallmentType === 'upon_enrollment'){
+                    paymentAmountInput.value = installment_balance;
+                } else {
+                    paymentAmountInput.value = partialUpon;
+                }
+            }
+        } else {
+            paymentAmountInput.value = '';
         }
     }
 
@@ -379,6 +437,22 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Add event listener to payment type select
     paymentTypeSelect.addEventListener("change", updatePaymentAmount);
+    installmentType.addEventListener("change", updatePaymentAmount);
+
+    function updatePaymentFields() {
+        if (paymentTypeSelect.value === 'installment') {
+            installmentFieldsDiv.style.display = 'block';
+        } else {
+            installmentFieldsDiv.style.display = 'none';
+        }
+    }
+
+    // Set initial state
+    updatePaymentFields();
+
+    // Add event listener to payment type select
+    paymentTypeSelect.addEventListener("change", updatePaymentFields);
+
 });
 </script>
 

@@ -102,20 +102,29 @@ else{
     
     <!-- Grade Level Field -->
     <div class="col-md-6">
-        <label for="grade_level" class="form-label">Grade Level</label>
-        <select class="form-select" id="grade_level" name="grade_level">
-            <option value="1">Grade 1</option>
-            <option value="2">Grade 2</option>
-            <!-- Add more options for other grade levels -->
-        </select>
-    </div>
+    <label for="grade_level" class="form-label">Grade Level</label>
+    <select class="form-select" id="grade_level" name="grade_level" required>
+        <option value="">Select Grade Level</option>
+        <?php
+        include "config1.php";
+        // Fetch grade levels from database
+        $sql = "SELECT * FROM gradelevel";
+        $result = mysqli_query($link, $sql);
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Check if the grade level matches the one stored in the database
+            $selected = ($row['gradelevel_id'] == $payment['grade_level']) ? 'selected' : '';
+            echo "<option value='" . $row['gradelevel_id'] . "' $selected>" . $row['gradelevel_name'] . "</option>";
+        }
+        ?>
+    </select>
+</div>
     
     <!-- Tuition June to March Field -->
-    <div class="col-md-6">
-        <label for="tuition_june_to_march" class="form-label">Tuition June to March</label>
+    <!-- <div class="col-md-6">
+        <label for="tuition_june_to_march" class="form-label">Tuition August to May</label>
         <input type="text" id="tuition_june_to_march" class="form-control" placeholder="Tuition June to March" name="tuition_june_to_march" value="<?php echo $payment['tuition_june_to_march']; ?>">
     </div>
-    
+     -->
     <!-- Partial Upon Field -->
     <div class="col-md-6">
         <label for="partial_upon" class="form-label">Partial Upon</label>
@@ -124,27 +133,27 @@ else{
     
     <!-- Total Whole Year Field -->
     <div class="col-md-6">
-        <label for="total_whole_year" class="form-label">Total Whole Year w/o Books</label>
+        <label for="total_whole_year" class="form-label">Total Tuition Fee</label>
         <input type="text" id="total_whole_year" class="form-control" placeholder="Total Whole Year" name="total_whole_year" value="<?php echo $payment['total_whole_year']; ?>">
     </div>
     
     <!-- PE Uniform Field -->
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
         <label for="pe_uniform" class="form-label">PE Uniform</label>
         <input type="text" id="pe_uniform" class="form-control" placeholder="PE Uniform" name="pe_uniform" value="<?php echo $payment['pe_uniform']; ?>">
-    </div>
+    </div> -->
     
     <!-- Books Field -->
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
         <label for="books" class="form-label">Books</label>
         <input type="text" id="books" class="form-control" placeholder="Books" name="books" value="<?php echo $payment['books']; ?>">
-    </div>
+    </div> -->
     
     <!-- School Uniform Field -->
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
         <label for="school_uniform" class="form-label">School Uniform</label>
         <input type="text" id="school_uniform" class="form-control" placeholder="School Uniform" name="school_uniform" value="<?php echo $payment['school_uniform']; ?>">
-    </div>
+    </div> -->
     
     <!-- Upon Enrollment Field -->
     <div class="col-md-6">
@@ -168,6 +177,27 @@ else{
     include 'footer.php';
     include 'script.php';
 ?>
+
+<script>
+document.getElementById('total_whole_year').addEventListener('input', function() {
+    var total = parseFloat(document.getElementById('total_whole_year').value);
+    if (!isNaN(total)) {
+        var partialUpon = Math.round(total * 0.3003); 
+        document.getElementById('partial_upon').value = partialUpon;
+    }
+});
+</script>
+
+<script>
+document.getElementById('total_whole_year').addEventListener('input', function() {
+    var total = parseFloat(document.getElementById('total_whole_year').value);
+    if (!isNaN(total)) {
+        var uponEnrollment = Math.round(total * 0.5345); // Calculate 46.5% of total
+        document.getElementById('upon_enrollment').value = uponEnrollment;
+    }
+});
+</script>
+
 
 </body>
 
