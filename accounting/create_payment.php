@@ -124,10 +124,10 @@ if(!isset($accounting_id)) {
         <input type="number" class="form-control" id="pe_uniform" name="pe_uniform">
     </div> -->
 
-    <label for="partial_upon" class="col-sm-2 col-form-label">Partial Upon</label>
+   <!--  <label for="partial_upon" class="col-sm-2 col-form-label">Partial Upon</label>
     <div class="col-md-4">
         <input type="number" class="form-control" id="partial_upon" name="partial_upon">
-    </div>
+    </div> -->
     
 </div>
 
@@ -149,7 +149,7 @@ if(!isset($accounting_id)) {
         <input type="number" class="form-control" id="school_uniform" name="school_uniform">
     </div>
 </div> -->
-<div class="row mb-3">
+<!-- <div class="row mb-3">
 <label for="upon_enrollment_divided" class="col-sm-2 col-form-label">Upon Enrollment (August - May)</label>
     <div class="col-md-4">
         <input type="number" class="form-control" id="upon_enrollment_divided" name="upon_enrollment_divided" readonly>
@@ -159,7 +159,7 @@ if(!isset($accounting_id)) {
     <div class="col-md-4">
         <input type="number" class="form-control" id="partial_upon_divided" name="partial_upon_divided" readonly>
     </div>
-</div>
+</div> -->
 <div class="text-center">
                         <button type="submit" class="btn btn-primary" name="add_payment">Submit</button>
                         <button type="reset" class="btn btn-secondary">Reset</button>
@@ -177,33 +177,7 @@ if(!isset($accounting_id)) {
     include 'script.php';
   ?>
 
-<script>
-document.getElementById('total_whole_year').addEventListener('input', function() {
-    var total = parseFloat(document.getElementById('total_whole_year').value);
-    if (!isNaN(total)) {
-        var partialUpon = Math.round(total * 0.3003); 
-        document.getElementById('partial_upon').value = partialUpon;
 
-        var partialP = total -partialUpon;
-        var partialUponDivided = Math.round(partialP / 10);
-        document.getElementById('partial_upon_divided').value = partialUponDivided;
-    }
-});
-</script>
-
-<script>
-document.getElementById('total_whole_year').addEventListener('input', function() {
-    var total = parseFloat(document.getElementById('total_whole_year').value);
-    if (!isNaN(total)) {
-        var uponEnrollment = Math.round(total * 0.5345); // Calculate 46.5% of total
-        document.getElementById('upon_enrollment').value = uponEnrollment;
-        
-        var uponP = total -uponEnrollment;
-        var uponEnrollmentDivided = Math.round(uponP / 10);
-        document.getElementById('upon_enrollment_divided').value = uponEnrollmentDivided;
-    }
-});
-</script>
 
 
 </body>
