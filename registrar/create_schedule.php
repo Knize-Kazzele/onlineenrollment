@@ -6,42 +6,48 @@ session_start();
 error_reporting(0);
 $registrar_id = $_SESSION['registrar_id'];
 
-if(!isset($registrar_id)){
-   header('location:login.php');
-}
-else{
-  if (isset($_POST['add_schedule'])) {
-    // Assuming $conn is your database connection object
+if (!isset($registrar_id)) {
+    header('location:login.php');
+} else {
+    if (isset($_POST['add_schedule'])) {
+        $grade_level = $_POST['grade_level'];
+        $section_id = $_POST['section'];
+        $subject_id = $_POST['subject_name'];
+        $teacher_id = $_POST['teacher'];
+        $room_id = $_POST['room'];
+        $start_time = $_POST['start_time'];
+        $end_time = $_POST['end_time'];
+        $days = $_POST['days']; // This is now an array
 
-    $grade_level = $_POST['grade_level'];
-    $section_id = $_POST['section'];
-    $subject_id = $_POST['subject_name'];
-    $teacher_id = $_POST['teacher'];
-    $room_id = $_POST['room'];
-    $start_time = $_POST['start_time'];
-    $end_time = $_POST['end_time'];
-    $day = $_POST['day'];
+        // Validate inputs here...
 
-    // Validate inputs here...
+        // Prepare and execute SQL query for each selected day
+        $sql = "INSERT INTO schedules (grade_level, section_id, subject_id, teacher_id, room_id, start_time, end_time, day) 
+                VALUES (:grade_level, :section_id, :subject_id, :teacher_id, :room_id, :start_time, :end_time, :day)";
+        $query = $conn->prepare($sql);
 
-    // Prepare and execute SQL query
-    $sql = "INSERT INTO schedules (grade_level, section_id, subject_id, teacher_id, room_id, start_time, end_time, day) 
-            VALUES (:grade_level, :section_id, :subject_id, :teacher_id, :room_id, :start_time, :end_time, :day)";
-    $query = $conn->prepare($sql);
-    $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
-    $query->bindParam(':section_id', $section_id, PDO::PARAM_INT);
-    $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
-    $query->bindParam(':teacher_id', $teacher_id, PDO::PARAM_INT);
-    $query->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-    $query->bindParam(':start_time', $start_time, PDO::PARAM_STR);
-    $query->bindParam(':end_time', $end_time, PDO::PARAM_STR);
-    $query->bindParam(':day', $day, PDO::PARAM_STR);
+        $success = true;
+        foreach ($days as $day) {
+            $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
+            $query->bindParam(':section_id', $section_id, PDO::PARAM_INT);
+            $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
+            $query->bindParam(':teacher_id', $teacher_id, PDO::PARAM_INT);
+            $query->bindParam(':room_id', $room_id, PDO::PARAM_INT);
+            $query->bindParam(':start_time', $start_time, PDO::PARAM_STR);
+            $query->bindParam(':end_time', $end_time, PDO::PARAM_STR);
+            $query->bindParam(':day', $day, PDO::PARAM_STR);
 
-    if ($query->execute()) {
-        $msg = "Schedule Added Successfully";
-    } else {
-        $error = "Something went wrong. Please try again";
-    }
+            if (!$query->execute()) {
+                $success = false;
+                break;
+            }
+        }
+
+        if ($success) {
+            $msg = "Schedule Added Successfully";
+        } else {
+            $error = "Something went wrong. Please try again";
+        }
     }
 ?>
 
@@ -91,7 +97,7 @@ else{
                   <option selected>Select Grade Level</option>
                   <?php
                     // Assuming you have a table named 'users' with 'role' column as 'teacher'
-                    $sql = "SELECT * FROM gradelevel";
+                    $sql = "SELECT * FROM gradelevel ORDER By gradelevel_name ASC";
                     $result = $conn->query($sql);
                     while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                         echo "<option value='" . $row['gradelevel_id'] . "'>" . $row['gradelevel_name'] . "</option>";
@@ -153,17 +159,36 @@ else{
               </div>
 
               <div class="col-md-12">
-                  <select id="day" class="form-select" name="day" required>
-                      <option selected>Select Day</option>
-                      <option value="Monday">Monday</option>
-                      <option value="Tuesday">Tuesday</option>
-                      <option value="Wednesday">Wednesday</option>
-                      <option value="Thursday">Thursday</option>
-                      <option value="Friday">Friday</option>
-                      <option value="Saturday">Saturday</option>
-                      <option value="Sunday">Sunday</option>
-                  </select>
-              </div>
+    <label for="days" class="form-label">Select Days</label><br>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="monday" name="days[]" value="Monday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="monday" class="form-check-label">Monday</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="tuesday" name="days[]" value="Tuesday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="tuesday" class="form-check-label">Tuesday</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="wednesday" name="days[]" value="Wednesday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="wednesday" class="form-check-label">Wednesday</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="thursday" name="days[]" value="Thursday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="thursday" class="form-check-label">Thursday</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="friday" name="days[]" value="Friday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="friday" class="form-check-label">Friday</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="saturday" name="days[]" value="Saturday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="saturday" class="form-check-label">Saturday</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input type="checkbox" id="sunday" name="days[]" value="Sunday" class="form-check-input" onclick="handleSingleCheckbox(this)">
+      <label for="sunday" class="form-check-label">Sunday</label>
+    </div>
+  </div>
 
               <div class="col-md-12">
                 <label for="start_time" class="form-label">Start Time</label>
@@ -187,7 +212,16 @@ else{
   </div>
 
 </main>
-
+<script>
+    function handleSingleCheckbox(checkbox) {
+        var checkboxes = document.querySelectorAll('input[name="' + checkbox.name + '"]');
+        checkboxes.forEach(function(cb) {
+            if (cb !== checkbox) {
+                cb.checked = false;
+            }
+        });
+    }
+</script>
 <?php
     include 'footer.php';
     include 'script.php';

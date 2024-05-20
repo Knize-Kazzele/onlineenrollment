@@ -19,7 +19,7 @@ if (!isset($registrar_id)) {
         $subject_id = $_POST['subject_name'];
         $teacher_id = $_POST['teacher_id'];
         $room_id = $_POST['room'];
-        $day = $_POST['day'];
+        $days = implode(',', $_POST['days']); 
         $start_time = $_POST['start_time'];
         $end_time = $_POST['end_time'];
 
@@ -41,7 +41,7 @@ if (!isset($registrar_id)) {
         $query->bindParam(':subject_id', $subject_id, PDO::PARAM_INT);
         $query->bindParam(':teacher_id', $teacher_id, PDO::PARAM_INT);
         $query->bindParam(':room_id', $room_id, PDO::PARAM_INT);
-        $query->bindParam(':day', $day, PDO::PARAM_STR);
+        $query->bindParam(':day', $days, PDO::PARAM_STR);
         $query->bindParam(':start_time', $start_time, PDO::PARAM_STR);
         $query->bindParam(':end_time', $end_time, PDO::PARAM_STR);
         
@@ -176,18 +176,22 @@ if (!isset($registrar_id)) {
                             ?>
                         </select>
                     </div>
-                    <div class="col-md-12">
-    <label for="day" class="form-label">Day</label>
-    <select id="day" class="form-select" name="day" required>
-        <option value="" selected>Select Day</option>
-        <option value="Monday" <?php if($schedule['day'] == 'Monday') echo 'selected'; ?>>Monday</option>
-        <option value="Tuesday" <?php if($schedule['day'] == 'Tuesday') echo 'selected'; ?>>Tuesday</option>
-        <option value="Wednesday" <?php if($schedule['day'] == 'Wednesday') echo 'selected'; ?>>Wednesday</option>
-        <option value="Thursday" <?php if($schedule['day'] == 'Thursday') echo 'selected'; ?>>Thursday</option>
-        <option value="Friday" <?php if($schedule['day'] == 'Friday') echo 'selected'; ?>>Friday</option>
-        <option value="Saturday" <?php if($schedule['day'] == 'Saturday') echo 'selected'; ?>>Saturday</option>
-        <option value="Sunday" <?php if($schedule['day'] == 'Sunday') echo 'selected'; ?>>Sunday</option>
-    </select>
+                    <?php
+// Assuming $schedule['day'] contains the days associated with the schedule as a comma-separated string
+$schedule_days = explode(',', $schedule['day']);
+$daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+?>
+<div class="col-md-12">
+    <label for="days" class="form-label">Select Days</label><br>
+    <?php
+    foreach ($daysOfWeek as $day) {
+        $checked = in_array($day, $schedule_days) ? 'checked' : '';
+        echo "<div class='form-check form-check-inline'>
+                <input type='checkbox' id='$day' name='days[]' value='$day' class='form-check-input' $checked onchange='handleCheckboxSelection(this)'>
+                <label for='$day' class='form-check-label'>$day</label>
+              </div>";
+    }
+    ?>
 </div>
                     <div class="col-md-12">
                         <label for="start_time" class="form-label">Start Time</label>
@@ -210,6 +214,19 @@ if (!isset($registrar_id)) {
         </div>
     </div>
 </main><!-- End #main -->
+<script>
+        function handleCheckboxSelection(checkbox) {
+            // Get all checkboxes
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            // Uncheck all checkboxes
+            checkboxes.forEach(function(cb) {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+        }
+    </script>
+
 
 
 <?php

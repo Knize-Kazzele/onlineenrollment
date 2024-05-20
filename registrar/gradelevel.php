@@ -108,13 +108,13 @@ if(!isset($registrar_id)){
                     require_once "config1.php";
 
                     // Attempt select query execution
-                    $sql = "SELECT * from gradelevel";
+                    $sql = "SELECT * from gradelevel ORDER by gradelevel_name ASC";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table datatable">';
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>#</th>";
+                                       
                                         echo "<th>Grade Level</th>";
                                         echo "<th>Graade Level Description</th>";
                                         echo "<th>Action</th>";
@@ -123,7 +123,7 @@ if(!isset($registrar_id)){
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['gradelevel_id'] . "</td>";
+                                       
                                         echo "<td>" . $row['gradelevel_name'] . "</td>";
                                         echo "<td>" . $row['gradelevel_description'] . "</td>";
                                         echo "<td>";

@@ -106,9 +106,9 @@ if(!isset($registrar_id)){
                           $not_verified_enrollee = 0;
                       }
                     ?>
-                    <div class="ps-3" style="margin-left: 50px;">
-                      <h5>Verified: <?php echo "$verified_enrollee"; ?></h5>
-                      <h5>Not yet Verified: <?php echo "$not_verified_enrollee"; ?></h5>
+                    <div class="ps-3" style="margin-left: 30px;">
+                      <h5 style="font-size: small; font-weight: bold;">Verified: <?php echo $verified_enrollee; ?></h5>
+                      <h5 style="font-size: small; font-weight: bold;">Not yet Verified: <?php echo $not_verified_enrollee; ?></h5>
                     </div>
                   </div>
                 </div>
