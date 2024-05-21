@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $payment_method = "Cash"; // Since it's disabled and fixed to Cash
         $payment_amount = $_POST['payment_amount'];
         $payment_date = $_POST['payment_date'];
+        $is_paid = isset($_POST['is_paid']) ? $_POST['is_paid'] : null;
 
         // Prepare an insert statement
         $sql = "INSERT INTO transactions (user_id, reference_number, payment_method, payment_amount, payment_date, created_at, status) 
@@ -38,6 +39,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Attempt to execute the prepared statement
             if (mysqli_stmt_execute($stmt)) {
+                // If the transaction is recorded successfully, update the student's isPaidUpon field
+                if ($is_paid !== null) {
+                    $update_sql = "UPDATE student SET isPaidUpon = ? WHERE student_id = ?";
+                    if ($update_stmt = mysqli_prepare($link, $update_sql)) {
+                        mysqli_stmt_bind_param($update_stmt, "ii", $param_is_paid, $param_student_id);
+
+                        // Set parameters
+                        $param_is_paid = $is_paid;
+                        $param_student_id = $student_id;
+
+                        // Attempt to execute the update statement
+                        mysqli_stmt_execute($update_stmt);
+                        
+                        // Close statement
+                        mysqli_stmt_close($update_stmt);
+                    }
+                }
+
                 // Records created successfully. Redirect to the transactions page
                 header("Location: transact.php?success=1");
                 exit();

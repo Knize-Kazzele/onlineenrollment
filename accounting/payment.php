@@ -76,7 +76,7 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                     echo "<tr>";
                                         echo "<th>Grade Level</th>";
                                         echo "<th>Upon Enrollment</th>";
-                                        echo "<th>Partial</th>";
+                                       
                                         echo "<th>Total Tuition Fee</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
@@ -87,7 +87,7 @@ if(isset($_GET['deleted']) && $_GET['deleted'] == 1){
                                        
                                         echo "<td>" .$row['gradelevel_name']."</td>";
                                         echo "<td>" . $row['upon_enrollment'] . "</td>";
-                                        echo "<td>" . $row['partial_upon'] . "</td>";
+
                                         echo "<td>" . $row['total_whole_year'] . "</td>";
                                         echo "<td>";
                                         echo '<button type="button" class="btn btn-primary r-2" title="View Record" data-toggle="modal" data-bs-toggle="modal" data-bs-target="#viewModal'.$row['payment_id'].'"><span class="bi bi-eye-fill"></span></button>';

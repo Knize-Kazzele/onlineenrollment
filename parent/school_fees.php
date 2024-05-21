@@ -89,7 +89,6 @@ if ($installment_count > 0) {
                                     echo "<tr>";
                                         echo "<th>Reference No.</th>";
                                         echo "<th>Payment Method</th>";
-                                        echo "<th>Payment Type</th>";
                                         echo "<th>Payment Amount</th>";
                                         echo "<th>Payment Date</th>";
                                         echo "<th>Status</th>";
@@ -101,13 +100,15 @@ if ($installment_count > 0) {
                                        
                                         echo "<td>" .$row['reference_number']."</td>";
                                         echo "<td>" . $row['payment_method'] . "</td>";
-                                        echo "<td>" . $row['payment_type'] . "</td>";
+                            
                                         echo "<td>" .'₱'.''. $row["payment_amount"] . "</td>";
                                         echo "<td>". $row["created_at"] . "</td>";
                                         echo "<td>";
                                             if ($row["status"] == 1) {
                                                 echo '<span class="badge bg-success text-dark">Verified</span>';
                                             } else if( $row['status'] == 2) {
+                                                echo '<span class="badge bg-warning text-dark">Paid</span>';
+                                            } else if( $row['status'] == 3) {
                                                 echo '<span class="badge bg-danger text-dark">Rejected</span>';
                                             } else{
                                                 echo '<span class="badge bg-warning text-dark">Not yet verified</span>';
@@ -145,7 +146,7 @@ if ($installment_count > 0) {
 require_once "config1.php";
 
 // Get the total amount paid by the user
-$sql = "SELECT SUM(payment_amount) AS total_paid FROM transactions WHERE user_id = $parent_id and status = 1";
+$sql = "SELECT SUM(payment_amount) AS total_paid FROM transactions WHERE user_id = $parent_id and status = 1 OR 2";
 $totalPaidResult = mysqli_query($link, $sql);
 $totalPaidRow = mysqli_fetch_assoc($totalPaidResult);
 $totalPaid = $totalPaidRow['total_paid'];
@@ -167,27 +168,36 @@ if($result = mysqli_query($link, $sql)){
                         echo'<td class="col-md-1 text-center">₱'.$row['total_whole_year'].'</td>';
                         echo'</tr>';
                         
-                        /* echo'<tr>';
-                        echo'<td class="col-md-9"><em>Book Fee:</em></h4></td>';
+                        echo'<tr>';
+                        echo'<td class="col-md-9"><em>Upon Enrollment:</em></h4></td>';
                         echo'<td>   </td>'; 
                         echo'<td>   </td>';
-                        echo'<td class="col-md-1 text-center">₱'.$row['books'].'</td>';
+                        echo'<td class="col-md-1 text-center">₱'.$row['upon_enrollment'].'</td>';
                         echo'</tr>';
 
                         echo'<tr>';
-                        echo'<td class="col-md-9"><em>School Uniform Fee:</em></h4></td>';
-                        echo'<td>   </td>'; 
+                        echo'<td class="col-md-9"><ul>
+                        <li>Miscellaneous</li>
+                        <li>ID/Test Paper</li>
+                        <li>Card</li>
+                        <li>Developmental</li>
+                        <li>Computer Basic</li>
+                        <li>Laboratory/Library</li>
+                      </ul></td>';
+                        echo'<td></td>'; 
                         echo'<td>   </td>';
-                        echo'<td class="col-md-1 text-center">₱'.$row['school_uniform'].'</td>';
+                        echo'<td class="col-md-1 text-center"></td>';
                         echo'</tr>';
 
-                        echo'<tr>';
-                        echo'<td class="col-md-9"><em>P.E Uniform:</em></h4></td>';
-                        echo'<td>   </td>'; 
-                        echo'<td>   </td>';
-                        echo'<td class="col-md-1 text-center">₱'.$row['pe_uniform'].'</td>';
-                        echo'</tr>'; */
                         
+                        echo'<tr>';
+                            echo'<td>   </td>';
+                            echo'<td class="text-right"><h4><strong></strong></h4></td>';
+                            echo'<td class="text-right"><h4><strong>Total: </strong></h4></td>';
+                            $total = $row['total_whole_year'] + $row['books'] + $row['school_uniform'] + $row['pe_uniform'];
+                            
+                            echo'<td class="text-center text-danger"><h4><strong>₱'.$total.'</strong></h4></td>';
+                        echo'</tr>';
                         echo'<tr>';
                             echo'<td>   </td>';
                             echo'<td class="text-right"><h4><strong>Total</strong></h4></td>';
@@ -200,12 +210,6 @@ if($result = mysqli_query($link, $sql)){
 
                         echo '</tbody>';
                         echo '</table>';
-                        if($remainingBalance > 0){
-                        echo'<div style="text-align: center;">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">Make a Payment</button>
-                        </div>';
-                        
-                        }
                         
         }
         // Free result set
@@ -224,6 +228,55 @@ if($result = mysqli_query($link, $sql)){
                 </div>
 
             </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Monthly Payment Schedule</h5>
+                            <?php
+                            // Include config file
+                            require_once "config1.php";
+                            // Attempt select query execution
+                            $sql = "SELECT student.isPaidUpon, payments.upon_enrollment
+                                    FROM student
+                                    INNER JOIN payments on student.grade_level = payments.grade_level 
+                                    WHERE student.userId = $parent_id AND student.isPaidUpon = 1";
+                            if($result = mysqli_query($link, $sql)){
+                                if(mysqli_num_rows($result) > 0){
+                                    echo '<table class="table">';
+                                        echo "<thead>";
+                                            echo "<tr>";
+                                                echo "<th>Month</th>";
+                                                echo "<th>Payment Amount</th>";
+                                            echo "</tr>";
+                                        echo "</thead>";
+                                        echo "<tbody>";
+                                        while($row = mysqli_fetch_array($result)){
+                                            $monthlyPayment = $row['upon_enrollment'] / 10;
+                                            $months = ["August", "September", "October", "November", "December", "January", "February", "March", "April", "May"];
+                                            foreach ($months as $month) {
+                                                echo "<tr>";
+                                                    echo "<td>$month</td>";
+                                                    echo "<td>₱" . number_format($monthlyPayment, 2) . "</td>";
+                                                echo "</tr>";
+                                            }
+                                        }
+                                        echo "</tbody>";                            
+                                    echo "</table>";
+                                    // Free result set
+                                    mysqli_free_result($result);
+                                } else{
+                                    echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                                }
+                            } else{
+                                echo "Oops! Something went wrong. Please try again later.";
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
