@@ -265,14 +265,14 @@
                     </div>
                     <div class="mb-3">
                         <label for="paymentAmount" class="form-label">Payment Amount</label>
-                        <input type="number" class="form-control" id="paymentAmount" name="payment_amount" required>
+                        <input type="number" class="form-control" id="paymentAmount" name="payment_amount" value="0.0" required>
                     </div>
                     <div class="mb-3">
                         <label for="paymentDate" class="form-label">Payment Date</label>
                         <input type="date" class="form-control" id="paymentDate" name="payment_date" required>
                     </div>
                     <div class="mb-3" id="isPaidRadioDiv" style="display: none;">
-                        <label for="isPaidRadio" class="form-label">Downpayment or Not?</label>
+                        <label for="isPaidRadio" class="form-label">Installment or Not?</label>
                         <div>
                             <input type="radio" id="isPaidYes" name="is_paid" value="1">
                             <label for="isPaidYes">Yes</label>

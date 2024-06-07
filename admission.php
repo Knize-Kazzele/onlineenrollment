@@ -55,11 +55,9 @@
     <header class="header_section">
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
-          <a class="navbar-brand" href="index.html">
-            <img src="images/logo.png" alt="">
-            <span>
-              E A A T I
-            </span>
+        <a class="navbar-brand" href="index.html">
+            <img src="images/logo.png" alt="" style="width: 100px; height: auto;">
+            <span style="font-size: 2em;">E A A T I</span>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,116 +123,123 @@
         <div class="card">
           <div class="card-header">
             <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
-            Student/Parent Registration
+            Student Registration
           </a>
           </div>
           <div id="collapseTwo" class="collapse" data-parent="#accordion">
-            <div class="card-body">
-            <form method="post" action="insert.php" onsubmit="return validateForm()">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" required>
+          <div class="card-body">
+    <form method="post" action="insert.php" onsubmit="return validateForm()">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Are you a new or old student?</label>
+                    <div>
+                        <input type="radio" id="new_student" name="student_type" value="new" onclick="toggleStudentType()"> New
+                        <input type="radio" id="old_student" name="student_type" value="old" onclick="toggleStudentType()"> Old
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="last_name">Last Name</label>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="first_name">First Name</label>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact_number">Contact Number</label>
+                    <input type="text" class="form-control" id="contact_number" name="contact_number" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" required>
-            </div>
-            <div class="form-group">
-                <label for="contact_number">Contact Number</label>
-                <input type="text" class="form-control" id="contact_number" name="contact_number">
-            </div>
-            <div class="form-group">
-                <label for="role">Role</label>
-                <select class="form-control" id="role" name="role" required>
-                    <option value="student">Student</option>
-                    <option value="parent">Parent</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+            <div class="col-md-6">
+                <div id="new_student_fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="username">Learner Reference Number (LRN)</label>
+                        <input type="text" class="form-control" id="username" name="username" oninput="validateLRN()" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="username">Learner Reference Number (LRN)</label>
-                <input type="text" class="form-control" id="username" name="username" oninput="validateLRN(event)" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" name="password" required>
-            </div>
-            <div class="form-group">
-                <label for="confirm_password">Confirm Password</label>
-                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-            </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-    </div>
-    <div class="text-center">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-    <medium><b><i>Note: Please login to submit your requirements. <a href="#" id="viewRequirements">Click here</a> to view the requirements.</i></b></medium>
+        <medium><b><i>Note: Please login to submit your requirements. <a href="#" id="viewRequirements">Click here</a> to view the requirements.</i></b></medium>
 
-<!-- Modal -->
-<div class="modal fade" id="requirementsModal" tabindex="-1" role="dialog" aria-labelledby="requirementsModalLabel" aria-hidden="true" style="margin-top: 50px;">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="requirementsModalLabel">Requirements</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Your requirements content goes here -->
-        <ul>
-              <li>F138 (CARD)</li>
-              <li>Birth Certificate Xerox</li>
-              <li>Good moral Certificate</li>
-            </ul>
-      </div>
-    </div>
-  </div>
+        <!-- Modal -->
+        <div class="modal fade" id="requirementsModal" tabindex="-1" role="dialog" aria-labelledby="requirementsModalLabel" aria-hidden="true" style="margin-top: 50px;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="requirementsModalLabel">Requirements</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Your requirements content goes here -->
+                        <ul>
+                            <li>F138 (CARD)</li>
+                            <li>Birth Certificate Xerox</li>
+                            <li>Good moral Certificate</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
-</form>
 
 <script>
-function validateLRN(event) {
-    const input = event.target;
-    let inputValue = input.value.trim();
-    
-    // Remove any non-digit characters
-    inputValue = inputValue.replace(/\D/g, '');
-
-    // Check if input is a number and has exactly 12 digits
-    const isValid = /^\d{12}$/.test(inputValue);
-
-    if (!isValid) {
-        // Clear the input field if it does not meet the validation criteria
-        input.value = inputValue.substring(0, 12);
+function toggleStudentType() {
+    var newStudent = document.getElementById('new_student').checked;
+    var newStudentFields = document.getElementById('new_student_fields');
+    if (newStudent) {
+        newStudentFields.style.display = 'block';
+        document.getElementById('username').required = true;
+        document.getElementById('password').required = true;
+        document.getElementById('confirm_password').required = true;
+        validateLRN();
+    } else {
+        newStudentFields.style.display = 'none';
+        document.getElementById('username').required = false;
+        document.getElementById('password').required = false;
+        document.getElementById('confirm_password').required = false;
     }
 }
-// Get the link to view requirements
-var link = document.getElementById("viewRequirements");
 
-// When the user clicks on the link, open the modal
-link.onclick = function() {
-  $('#requirementsModal').modal('show');
-}
-</script>
-<script>
-    function validateForm() {
-        var password = document.getElementById("password").value;
-        var confirm_password = document.getElementById("confirm_password").value;
-
-        if (password != confirm_password) {
-            alert("Passwords do not match");
+function validateForm() {
+    var newStudent = document.getElementById('new_student').checked;
+    if (newStudent) {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
             return false;
         }
-        return true;
     }
+    return true;
+}
+
+function validateLRN() {
+  var base = "488041";
+            var year = new Date().getFullYear().toString().slice(-2);
+            var randomFourDigits = Math.floor(1000 + Math.random() * 9000).toString();
+            var lrn = base + year + randomFourDigits;
+            document.getElementById('username').value = lrn;
+}
 </script>
 
             </div>
@@ -280,11 +285,33 @@ link.onclick = function() {
 
   <!-- footer section -->
   <section class="container-fluid footer_section">
-    <p>
-      Copyright &copy; 2024 All Rights Reserved By
-      <a href="https://web.facebook.com/eaati2005">Eastern Achiever Academy of Taguig Inc.</a>
-    </p>
-  </section>
+    <div class="row justify-content-center" style="margin: 20px;">
+        <div class="col-md-6 text-center">
+            <iframe class="embed-responsive-item" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15449.82659698259!2d121.0388348!3d14.5158526!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397cf34aadc2c4b%3A0xa6a167660ed24ec7!2sEastern%20Achiever%20Academy%20Of%20Taguig!5e0!3m2!1sen!2sph!4v1716883828672!5m2!1sen!2sph" 
+                style="width: 100%; height: 100%; border: 0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center text-center">
+            <div>
+                <h4>Contact Us</h4>
+                <p>
+                    <strong>Address:</strong> Carlos, P. Garcia Avenue, Taguig, 1632 Metro Manila<br>
+                    <strong>Tel. No:</strong> (02) 3489 4692<br>
+                    <strong>Email:</strong> <a href="mailto:info@eaati.edu.ph">info@eaati.edu.ph</a>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="margin: 20px;">
+        <p>
+            Copyright &copy; 2024 All Rights Reserved By
+            <a href="https://web.facebook.com/eaati2005">Eastern Achiever Academy of Taguig Inc.</a>
+        </p>
+    </div>
+</section>
   <!-- footer section -->
 
   <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>

@@ -1,38 +1,31 @@
 <?php
-
 include 'config1.php';
 
-// Check if form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    // Validate input
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sectionName = $_POST['sectionName'];
     $sectionDescription = $_POST['sectionDescription'];
+    $sectionCapacity = $_POST['sectionCapacity'];
 
     // Prepare an insert statement
-    $sql = "INSERT INTO sections (section_name, section_description) VALUES (?, ?)";
+    $sql = "INSERT INTO sections (section_name, section_description, capacity) VALUES (?, ?, ?)";
 
-    if($stmt = mysqli_prepare($link, $sql)){
-        // Bind variables to the prepared statement as parameters
-        mysqli_stmt_bind_param($stmt, "ss", $param_sectionName, $param_sectionDescription);
+    if ($stmt = mysqli_prepare($link, $sql)) {
+        mysqli_stmt_bind_param($stmt, "ssi", $param_name, $param_description, $param_capacity);
 
-        // Set parameters
-        $param_sectionName = $sectionName;
-        $param_sectionDescription = $sectionDescription;
+        $param_name = $sectionName;
+        $param_description = $sectionDescription;
+        $param_capacity = $sectionCapacity;
 
-        // Attempt to execute the prepared statement
-        if(mysqli_stmt_execute($stmt)){
-            // Redirect to subject management page with success message
+        if (mysqli_stmt_execute($stmt)) {
             header("location: section.php?added=1");
             exit();
-        } else{
+        } else {
             echo "Something went wrong. Please try again later.";
         }
 
-        // Close statement
         mysqli_stmt_close($stmt);
     }
-
-    // Close connection
-    mysqli_close($link);
 }
+
+mysqli_close($link);
 ?>

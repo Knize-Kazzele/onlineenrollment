@@ -287,7 +287,7 @@ Registrar
   <table>
   <tr>
     <td>Tuition</td>
-    <td><?php echo $total; ?></td>
+    <td style="text-align: right;"><?php echo $total; ?></td>
   </tr>
   <tr>
     <?php
@@ -299,9 +299,9 @@ Registrar
     ?>
     <?php
      if($type=='partial'){
-      echo'<td>'.$partialP.'</td>';
+      echo'<td style="text-align: right;">'.$partialP.'</td>';
      }else{
-      echo'<td>'.$uponP.'</td>';
+      echo'<td style="text-align: right;">'.$uponP.'</td>';
      }
     ?>
   </tr>
@@ -324,12 +324,12 @@ Registrar
   <tr>
     <td>Tuition August to May</td>
     <?php
-    echo '<td>'.$tuition.'</td>';
+    echo '<td style="text-align: right;">'.$tuition.'</td>';
     ?>
   </tr>
   <tr>
     <td>TOTAL</td>
-    <td><?php echo $total; ?></td>
+    <td style="text-align: right;"><?php echo $total; ?></td>
   </tr>
 </table>
   </div>
