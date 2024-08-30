@@ -1,65 +1,62 @@
 <?php
-
 session_start();
 
-// Replace these database credentials with your own
+// Database connection setup
 $servername = "localhost";
 $username = "root";
 $password = "";
 $database = "enrollment";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $database);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Set the role based on the student type
-$role = "student";
+$student_type = $_POST['student_type'] ?? '';
 
-// Prepare SQL statement for inserting student records
-$stmt = $conn->prepare("INSERT INTO users (username, password, role, first_name, last_name, contact_number, email) VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-if ($stmt === false) {
-    die('Error preparing statement: ' . $conn->error);
-}
-
-// Bind parameters for inserting student records
-$stmt->bind_param("sssssss", $username, $hashed_password, $role, $first_name, $last_name, $contact_number, $email);
-
-if ($stmt === false) {
-    die('Error binding parameters: ' . $stmt->error);
-}
-
-$username = isset($_POST['username']) ? $_POST['username'] : null;
-$password = isset($_POST['password']) ? $_POST['password'] : null;
-$last_name = $_POST['last_name'];
-$first_name = $_POST['first_name'];
-$contact_number = $_POST['contact_number'];
-$email = $_POST['email'];
-
-if ($password) {
+if ($student_type === 'new') {
+    // Handling new student registration
+    $username = $_POST['username'];
+    $password = $_POST['password'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-} else {
-    $hashed_password = null; // Handle this appropriately based on your requirements
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $contact_number = $_POST['contact_number'];
+    $email = $_POST['email'];
+    $role = "student";
+
+    $stmt = $conn->prepare("INSERT INTO users (username, password, role, first_name, last_name, contact_number, email) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssss", $username, $hashed_password, $role, $first_name, $last_name, $contact_number, $email);
+
+    if ($stmt->execute()) {
+        header("Location: success.php"); // Redirect to a success page
+    } else {
+        $_SESSION['error_message'] = "Error: " . $stmt->error;
+        header("Location: admission.php"); // Redirect back to the form with an error message
+    }
+
+    $stmt->close();
+} elseif ($student_type === 'old') {
+    // Handling old student identification
+    $username = $_POST['username'];
+
+    // Query to check if student exists
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        header("Location: login.php"); // Redirect to the login or profile update page
+    } else {
+        $_SESSION['error_message'] = "Student not found. Please register as a new student.";
+        header("Location: admission.php"); // Redirect back to the form with an error message
+    }
+
+    $stmt->close();
 }
 
-// Execute statement for inserting student records
-$result = $stmt->execute();
-
-if ($result) {
-    echo "New records created successfully";
-} else {
-    echo "Error: " . $stmt->error;
-}
-
-// Close statement and connection
-$stmt->close();
 $conn->close();
-
-// Redirect back to the form page
-header("Location: admission.php");
 exit();
 ?>

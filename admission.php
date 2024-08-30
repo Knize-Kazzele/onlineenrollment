@@ -172,6 +172,14 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-6">
+                <div id="old_student_fields" style="display: none;">
+                    <div class="form-group">
+                        <label for="username">Learner Reference Number (LRN)</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -205,16 +213,20 @@
 <script>
 function toggleStudentType() {
     var newStudent = document.getElementById('new_student').checked;
+    var oldStudent = document.getElementById('old_student').checked;
     var newStudentFields = document.getElementById('new_student_fields');
+    var oldStudentFields = document.getElementById('old_student_fields');
     if (newStudent) {
         newStudentFields.style.display = 'block';
+        oldStudentFields.style.display = 'none';
         document.getElementById('username').required = true;
         document.getElementById('password').required = true;
         document.getElementById('confirm_password').required = true;
         validateLRN();
-    } else {
+    } else if(oldStudent) {
         newStudentFields.style.display = 'none';
-        document.getElementById('username').required = false;
+        oldStudentFields.style.display = 'block';
+        document.getElementById('username').required = true;
         document.getElementById('password').required = false;
         document.getElementById('confirm_password').required = false;
     }
