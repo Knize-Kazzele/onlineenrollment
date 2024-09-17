@@ -17,7 +17,9 @@ $student_type = $_POST['student_type'] ?? '';
 
 if ($student_type === 'new') {
     // Handling new student registration
-    $username = $_POST['username'];
+    error_log("LRN (username) received: " . $_POST['username']);
+
+    $usernameNew = $_POST['usernameNew'];
     $password = $_POST['password'];
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
     $first_name = $_POST['first_name'];
@@ -27,10 +29,10 @@ if ($student_type === 'new') {
     $role = "student";
 
     $stmt = $conn->prepare("INSERT INTO users (username, password, role, first_name, last_name, contact_number, email) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $username, $hashed_password, $role, $first_name, $last_name, $contact_number, $email);
+    $stmt->bind_param("sssssss", $usernameNew, $hashed_password, $role, $first_name, $last_name, $contact_number, $email);
 
     if ($stmt->execute()) {
-        header("Location: success.php"); // Redirect to a success page
+        header("Location: login.php"); // Redirect to a success page
     } else {
         $_SESSION['error_message'] = "Error: " . $stmt->error;
         header("Location: admission.php"); // Redirect back to the form with an error message
