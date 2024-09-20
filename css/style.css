@@ -341,7 +341,7 @@ a:focus {
 }
 
 .contact-form input::placeholder {
-  color: #fff;
+  color: black;
 }
 
 .contact-form button {
