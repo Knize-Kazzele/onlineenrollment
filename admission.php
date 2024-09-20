@@ -160,7 +160,7 @@
                 <div id="new_student_fields" style="display: none;">
                     <div class="form-group">
                         <label for="username">Learner Reference Number (LRN)</label>
-                        <input type="text" class="form-control" id="usernameNew" name="usernameNew" oninput="validateLRN()" readonly>
+                        <input type="text" class="form-control" id="usernameNew" name="usernameNew">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
@@ -237,10 +237,7 @@ function validateForm() {
     if (newStudent) {
       document.getElementById('username').disabled = false;
         var password = document.getElementById('password').value;
-        var confirmPassword = document.getElementById('confirm_password').value;
-        var usernameNew = document.getElementById('usernameNew').value;
-        console.log("Submitting New Student with Username: " + usernameNew); // Debugging line
-        
+        var confirmPassword = document.getElementById('confirm_password').value;        
         if (password !== confirmPassword) {
             alert("Passwords do not match!");
             return false;
@@ -249,14 +246,11 @@ function validateForm() {
     return true;
 }
 
-
-
 function validateLRN() {
     var base = "488041";
     var year = new Date().getFullYear().toString().slice(-2);
     var randomFourDigits = Math.floor(1000 + Math.random() * 9000).toString();
     var lrn = base + year + randomFourDigits;
-    document.getElementById('usernameNew').value = lrn;
     document.getElementById('username').disabled = false;
     console.log("Generated LRN: " + lrn); // Debugging line
 }
