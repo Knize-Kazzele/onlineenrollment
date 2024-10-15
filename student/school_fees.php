@@ -286,12 +286,12 @@ if ($pending_count > 0) {
             </label>
             <input class="form-check-input" type="radio" name="payment_method" id="payment_method_cash" value="Cash" checked>
         </div>
-        <div style="display: inline-block;">
+        <!-- <div style="display: inline-block;">
             <label class="form-check-label" for="payment_method_gcash">
                 <img src="../images/gcash_icon.png" alt="GCash Icon" class="payment-icon" style="width: 200px; height: 65px; vertical-align: middle; margin-right: 5px;">
             </label>
             <input class="form-check-input" type="radio" name="payment_method" id="payment_method_gcash" value="GCash">
-        </div>
+        </div> -->
     </div>
 </div>
 

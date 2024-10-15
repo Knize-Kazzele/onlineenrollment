@@ -209,44 +209,52 @@ else {
         </select>
     </div>
 </div>
-                                <form method="post" name="add_registration" onSubmit="return valid();" enctype="multipart/form-data" id="registrationForm" style="display: none;">
-                                <div class="row mb-3">
-                                <div class="col-md-9" style="margin-top: 120px;">
-    <label for="sname" class="form-label">Name</label>
-    <input type="text" class="form-control" id="sname" name="sname" value="<?php echo htmlentities($full_name); ?>" style="pointer-events: none;">
-</div>
-<div class="col-md-3 text-center">
-    <img id="preview" src="../images/profile.jpg" alt="Profile Picture" class="mx-auto d-block" style="width: 200px; height: 200px; cursor: pointer;" onclick="triggerFileUpload()">
-    <input type="file" accept="image/*"  class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;" required>
-    <label for="image" class="form-label">Upload Image (2x2)</label>
-</div>
-
-</div>
+<form method="post" name="add_registration" onSubmit="return valid();" enctype="multipart/form-data" id="registrationForm" style="display: none;">
+    <!-- Personal Information Section -->
+    <div class="row mb-3 justify-content-center">
+        <div class="col-md-12 text-center d-flex justify-content-center">
+            <div>
+                <img id="preview" src="../images/profile.jpg" alt="Profile Picture" class="img-fluid" style="width: 150px; height: 150px; cursor: pointer;" onclick="triggerFileUpload()">
+                <input type="file" accept="image/*" class="form-control" id="image" name="image" onchange="previewImage(event)" style="display: none;" required>
+                <label for="image" class="form-label mt-2">Upload Image (2x2)</label>
+            </div>
+        </div>
+    </div>
 
     <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="sname" class="form-label">Name</label>
+            <input type="text" class="form-control" id="sname" name="sname" value="<?php echo htmlentities($full_name); ?>" style="pointer-events: none;">
+        </div>
         <div class="col-md-6">
             <label for="dob" class="form-label">Date of Birth</label>
             <input type="date" class="form-control" id="dob" name="dob">
         </div>
+    </div>
+
+    <div class="row mb-3">
         <div class="col-md-6">
             <label for="pob" class="form-label">Place of Birth</label>
             <input type="text" class="form-control" id="pob" name="pob">
         </div>
-    </div>
-    <div class="row mb-3">
-        <div class="col-md-3">
+        <div class="col-md-6">
             <label for="email" class="form-label">Email Address</label>
             <input type="email" class="form-control" id="email" name="email" value="<?php echo isset($student_email) ? htmlspecialchars($student_email) : ''; ?>">
         </div>
-        <div class="col-md-1">
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-2">
             <label for="age" class="form-label">Age</label>
             <input type="text" class="form-control" id="age" name="age" readonly>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             <label for="address" class="form-label">Address</label>
             <input type="text" class="form-control" id="address" name="address">
         </div>
     </div>
+
+    <!-- Parent Information Section -->
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="father_name" class="form-label">Name of Father</label>
@@ -256,11 +264,15 @@ else {
             <label for="business_address_father" class="form-label">Address (Father)</label>
             <input type="text" class="form-control" id="business_address_father" name="business_address_father">
         </div>
+    </div>
+
+    <div class="row mb-3">
         <div class="col-md-6">
             <label for="telephone_father" class="form-label">Telephone (Father)</label>
             <input type="tel" class="form-control" id="telephone_father" name="telephone_father">
         </div>
     </div>
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="mother_name" class="form-label">Name of Mother</label>
@@ -270,17 +282,23 @@ else {
             <label for="business_address_mother" class="form-label">Address (Mother)</label>
             <input type="text" class="form-control" id="business_address_mother" name="business_address_mother">
         </div>
+    </div>
+
+    <div class="row mb-3">
         <div class="col-md-6">
             <label for="telephone_mother" class="form-label">Telephone (Mother)</label>
             <input type="tel" class="form-control" id="telephone_mother" name="telephone_mother">
         </div>
     </div>
+
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="guardian" class="form-label">Guardian (for absent parent/s)</label>
             <input type="text" class="form-control" id="guardian" name="guardian">
         </div>
     </div>
+
+    <!-- School Information Section -->
     <div class="row mb-3">
         <div class="col-md-6">
             <label for="previous_school" class="form-label">Previous School Attended</label>
@@ -291,25 +309,26 @@ else {
             <input type="text" class="form-control" id="school_address" name="school_address">
         </div>
     </div>
-    <hr size=8 noshade>
+
+    <!-- Requirements Section -->
     <div class="row mb-3">
-    
-    <div class="col-md-6" style="margin-top: 20px;">
-    <label for="requirements" class="form-label">Requirements:</label>
-    <ul>
-        <li>F138 (CARD)</li>
-        <li>Birth Certificate Xerox</li>
-        <li>Good moral Certificate</li>
-    </ul>
-    <input type="file" class="form-control" id="requirements" accept="application/pdf" name="requirements[]" multiple>
-    <!-- Allow multiple file uploads for requirements -->
-    <small><i>Only PDF files are allowed.</i></small>
-</div>
-</div>
-<center>
-    <button type="submit" class="btn btn-primary" name="add_registration">Submit</button>
-</center>
+        <div class="col-md-6">
+            <label for="requirements" class="form-label">Requirements:</label>
+            <ul class="ps-3">
+                <li>F138 (CARD)</li>
+                <li>Birth Certificate Xerox</li>
+                <li>Good moral Certificate</li>
+            </ul>
+            <input type="file" class="form-control" id="requirements" accept="application/pdf" name="requirements[]" multiple>
+            <small><i>Only PDF files are allowed.</i></small>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary" name="add_registration">Submit</button>
+    </div>
 </form>
+
 <?php}?>
 
                         </div>

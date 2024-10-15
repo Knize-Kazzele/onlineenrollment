@@ -46,6 +46,11 @@ else {
         $query->execute();
         $student = $query->fetch(PDO::FETCH_ASSOC);
     }
+    // Fetch available grade levels from the database
+$sql_grades = "SELECT gradelevel_id, gradelevel_name FROM gradelevel";
+$query_grades = $conn->prepare($sql_grades);
+$query_grades->execute();
+$grades = $query_grades->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
     <main id="main" class="main">
@@ -162,13 +167,15 @@ else {
     <hr size=8 noshade>
     <div class="row mb-3">
     <div class="col-md-6">
-        <label for="grade_level" class="form-label">Grade Level</label>
-        <select class="form-select" id="grade_level" name="grade_level" disabled>
-            <option value="1">Grade 1</option>
-            <option value="2">Grade 2</option>
-            <!-- Add more options for other grade levels -->
-        </select>
-    </div>
+                                            <label for="grade_level" class="form-label">Grade Level</label>
+                                            <select class="form-select" id="grade_level" name="grade_level" disabled>
+                                                <?php foreach($grades as $grade): ?>
+                                                    <option value="<?php echo $grade['gradelevel_id']; ?>" <?php if($student['grade_level'] == $grade['gradelevel_id']) echo 'selected'; ?>>
+                                                        <?php echo $grade['gradelevel_name']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
     <div class="col-md-6" style="margin-top: 20px;">
     <label for="requirements" class="form-label">Uploaded Requirements:</label>
     <?php

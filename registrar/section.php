@@ -172,10 +172,6 @@ if(!isset($registrar_id)){
                                                                 <label for="editSectionDescription" class="form-label">Section Description</label>
                                                                 <textarea class="form-control" id="editSectionDescription" name="editSectionDescription" rows="3" required>'.$row['section_description'].'</textarea>
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label for="editSectionCapacity" class="form-label">Section Capacity</label>
-                                                                <input type="number" class="form-control" id="editSectionCapacity" name="editSectionCapacity" value="'.$row['capacity'].'" required>
-                                                            </div>
                                                             <input type="hidden" name="section_id" value="'.$row['section_id'].'">
                                                             <button type="submit" class="btn btn-primary">Save Changes</button>
                                                         </form>

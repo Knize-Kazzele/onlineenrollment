@@ -68,7 +68,7 @@ if(!isset($registrar_id)){
                     
 
                     // Attempt select query execution
-                    $sql = "SELECT schedules.*,subjects.subject_name,sections.capacity,sections.section_name,rooms.room_name,gradelevel.gradelevel_name, CONCAT(users.first_name, ' ', users.last_name) AS teacher_name FROM schedules 
+                    $sql = "SELECT schedules.*,subjects.subject_name,sections.section_name,rooms.room_name,gradelevel.gradelevel_name, CONCAT(users.first_name, ' ', users.last_name) AS teacher_name FROM schedules 
                     INNER JOIN users ON schedules.teacher_id = users.id
                     INNER JOIN sections on sections.section_id = schedules.section_id
                     INNER JOIN subjects ON subjects.subject_id = schedules.subject_id
@@ -88,7 +88,6 @@ if(!isset($registrar_id)){
                                         echo "<th>Day</th>";
                                         echo "<th>Start Time</th>";
                                         echo "<th>End Time</th>";
-                                        echo "<th>Capacity</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -103,7 +102,6 @@ if(!isset($registrar_id)){
                                         echo "<td>" . $row['day'] . "</td>";
                                         echo "<td>" . $row['start_time'] . "</td>";
                                         echo "<td>" . $row['end_time'] . "</td>";
-                                        echo "<td>" . $row['capacity'] . "</td>";
                                         echo "<td>";
                                             echo '<a href="read.php?id='. $row['id'] .'" class="r-2 btn btn-info" title="View Record" data-toggle="tooltip"><span class="bi bi-eye-fill"></span></a>';
                                             echo '<a href="edit_schedule.php?id='. $row['id'] .'" class="m-2 btn btn-secondary" title="Update Record" data-toggle="tooltip"><span class="bi bi-pencil-fill"></span></a>';
